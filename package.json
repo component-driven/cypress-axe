@@ -1,6 +1,6 @@
 {
   "name": "cypress-axe",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "files": [
     "index.js"
   ],
@@ -24,5 +24,14 @@
   "license": "MIT",
   "devDependencies": {
     "axe-core": "^3.1.2"
-  }
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avanslaars/cypress-axe.git"
+  },
+  "bugs": {
+    "url": "https://github.com/avanslaars/cypress-axe/issues"
+  },
+  "homepage": "https://github.com/avanslaars/cypress-axe#readme"
 }
