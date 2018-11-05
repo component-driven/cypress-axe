@@ -10,7 +10,7 @@ This package provides two simple [Cypress](https://cypress.io) commands to help 
 
 ## Commands
 
-### injectAxe
+### cy.injectAxe
 
 This will inject the `axe-core` runtime into the page under test. You must run this after a call to `cy.visit()` and before you run the `checkA11y` command.
 
@@ -23,7 +23,7 @@ beforeEach(() => {
 })
 ```
 
-### checkA11y
+### cy.checkA11y
 
 This will run axe against the document at the point in which it is called. This means you can call this after interacting with your page and uncover accessibility issues introduced as a result of rendering in response to user actions.
 

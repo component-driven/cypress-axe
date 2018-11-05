@@ -6,9 +6,6 @@
   ],
   "description": "Custom cypress commands to inject axe-core and test for a11y",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [
     "a11y",
     "accessibility",
