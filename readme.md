@@ -5,6 +5,7 @@ This package provides two simple [Cypress](https://cypress.io) commands to help 
 ## Install and configure
 
 - Add as a dev dependency of your project with: `npm i -D cypress-axe`
+- If you don't already have them, install the peer dependencies with: `npm i -D cypress axe-core`
 - Include the commands in your Cypress specs by adding `import 'cypress-axe'` to the `Cypress` > `Support` > `index.js` file.
 
 ## Commands
