@@ -5,10 +5,21 @@ Cypress.Commands.add('injectAxe', () => {
   })
 })
 
-Cypress.Commands.add('checkA11y', () => {
+Cypress.Commands.add('configureAxe', (configurationOptions = {}) => {
   cy.window({ log: false })
     .then(win => {
-      return win.axe.run(win.document)
+      return win.axe.configure(configurationOptions)
+    })
+})
+
+Cypress.Commands.add('checkA11y', (context, options) => {
+  cy.window({ log: false })
+    .then(win => {
+      if (isEmptyObjectorNull(context)) context = undefined
+      if (isEmptyObjectorNull(options)) options = undefined
+      return win.axe.run(context ? 
+            context = context : 
+            context = win.document, options)
     })
     .then(({ violations }) => {
       if (violations.length) {
@@ -34,3 +45,8 @@ Cypress.Commands.add('checkA11y', () => {
       )
     })
 })
+
+function isEmptyObjectorNull(value) {
+  if (value == null) return true
+  return Object.entries(value).length === 0 && value.constructor === Object
+}
