@@ -1,6 +1,6 @@
 {
   "name": "cypress-axe",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "files": [
     "index.js"
   ],
@@ -18,6 +18,13 @@
     "cypress": "^3.1.1"
   },
   "author": "Andy Van Slaars",
+  "contributors": [
+    {
+      "name": "Samuel Anthony Custer",
+      "email": "samuel.a.custer@gmail.com",
+      "url": "https://samcus.co"
+    }
+  ],
   "license": "MIT",
   "devDependencies": {
     "axe-core": "^3.1.2"
