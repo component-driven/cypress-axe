@@ -1,4 +1,5 @@
 # cypress-axe
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
 
 This package provides two simple [Cypress](https://cypress.io) commands to help test your applications for accessibility issues using [axe-core](https://github.com/dequelabs/axe-core).
 
@@ -90,3 +91,15 @@ it('Has no a11y violations after button click', () => {
 When accessibility violations are detected, your test will fail and an entry titled "A11Y ERROR!" will be added to the command log for each type of violation found (they will be above the failed assertion). Clicking on those will reveal more specifics about the error in the DevTools console.
 
 ![Cypress and DevTools output for passing and failing axe-core audits](cmd_log.png)
+
+## Contributors
+
+Thanks goes to these wonderful people ([emoji key](https://github.com/all-contributors/all-contributors#emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+| [<img src="https://avatars2.githubusercontent.com/u/14907938?v=4" width="100px;" alt="Samuel Custer"/><br /><sub><b>Samuel Custer</b></sub>](https://samcus.co)<br />[💻](https://github.com/avanslaars/cypress-axe/commits?author=samcus "Code") [📖](https://github.com/avanslaars/cypress-axe/commits?author=samcus "Documentation") |
+| :---: |
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
