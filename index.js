@@ -12,17 +12,19 @@ Cypress.Commands.add('configureAxe', (configurationOptions = {}) => {
     })
 })
 
-Cypress.Commands.add('checkA11y', (context, options) => {
+Cypress.Commands.add('checkA11y', (context, options, violationCallback) => {
   cy.window({ log: false })
     .then(win => {
       if (isEmptyObjectorNull(context)) context = undefined
       if (isEmptyObjectorNull(options)) options = undefined
+      if (isEmptyObjectorNull(violationCallback)) violationCallback = undefined
       return win.axe.run(context ? 
             context = context : 
             context = win.document, options)
     })
     .then(({ violations }) => {
       if (violations.length) {
+        if (violationCallback) violationCallback(violations)
         cy.wrap(violations, { log: false }).each(v => {
           Cypress.log({
             name: 'a11y error!',
