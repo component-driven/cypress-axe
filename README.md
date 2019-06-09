@@ -1,5 +1,5 @@
 # cypress-axe
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
 
 This package provides three simple [Cypress](https://cypress.io) commands to help test your applications for accessibility issues using [axe-core](https://github.com/dequelabs/axe-core).
 
@@ -115,8 +115,8 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/all-contri
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore -->
-| [<img src="https://avatars2.githubusercontent.com/u/14907938?v=4" width="100px;" alt="Samuel Custer"/><br /><sub><b>Samuel Custer</b></sub>](https://samcus.co)<br />[💻](https://github.com/avanslaars/cypress-axe/commits?author=samcus "Code") [📖](https://github.com/avanslaars/cypress-axe/commits?author=samcus "Documentation") |
-| :---: |
+<table><tr><td align="center"><a href="https://samcus.co"><img src="https://avatars2.githubusercontent.com/u/14907938?v=4" width="100px;" alt="Samuel Custer"/><br /><sub><b>Samuel Custer</b></sub></a><br /><a href="https://github.com/avanslaars/cypress-axe/commits?author=samcus" title="Code">💻</a> <a href="https://github.com/avanslaars/cypress-axe/commits?author=samcus" title="Documentation">📖</a></td><td align="center"><a href="https://github.com/miketoth"><img src="https://avatars2.githubusercontent.com/u/2512676?v=4" width="100px;" alt="Michael Toth"/><br /><sub><b>Michael Toth</b></sub></a><br /><a href="https://github.com/avanslaars/cypress-axe/commits?author=miketoth" title="Code">💻</a></td></tr></table>
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
