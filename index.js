@@ -1,15 +1,14 @@
 Cypress.Commands.add('injectAxe', () => {
   cy.window({ log: false }).then(window => {
     const axe = require('axe-core')
-    window.axe = axe
+    window.eval(axe.source)
   })
 })
 
 Cypress.Commands.add('configureAxe', (configurationOptions = {}) => {
-  cy.window({ log: false })
-    .then(win => {
-      return win.axe.configure(configurationOptions)
-    })
+  cy.window({ log: false }).then(win => {
+    return win.axe.configure(configurationOptions)
+  })
 })
 
 Cypress.Commands.add('checkA11y', (context, options, violationCallback) => {
@@ -18,9 +17,10 @@ Cypress.Commands.add('checkA11y', (context, options, violationCallback) => {
       if (isEmptyObjectorNull(context)) context = undefined
       if (isEmptyObjectorNull(options)) options = undefined
       if (isEmptyObjectorNull(violationCallback)) violationCallback = undefined
-      return win.axe.run(context ? 
-            context = context : 
-            context = win.document, options)
+      return win.axe.run(
+        context ? (context = context) : (context = win.document),
+        options
+      )
     })
     .then(({ violations }) => {
       if (violations.length) {
