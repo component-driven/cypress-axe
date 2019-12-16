@@ -25,6 +25,9 @@ Update `Cypress/support/index.js` file to include the cypress-axe commands by ad
 import 'cypress-axe'
 ```
 
+### Add a task to log the messages to the terminal when the cypress executes the spec files
+
+[Example - configuring log task](https://docs.cypress.io/api/commands/task.html#Usage)
 
 ## Commands
 
@@ -102,6 +105,10 @@ it('Has no a11y violations after button click', () => {
   cy.checkA11y()
 })
 ```
+
+Optionally you can also pass additional argument `skipFailures` to disable the failures and only log them to the console output 
+
+Reference : https://github.com/avanslaars/cypress-axe/issues/17
 
 ## Output
 

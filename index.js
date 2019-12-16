@@ -11,7 +11,7 @@ Cypress.Commands.add('configureAxe', (configurationOptions = {}) => {
   })
 })
 
-Cypress.Commands.add('checkA11y', (context, options, violationCallback) => {
+Cypress.Commands.add('checkA11y', (context, options, violationCallback, skipFailures = false) => {
   cy.window({ log: false })
     .then(win => {
       if (isEmptyObjectorNull(context)) context = undefined
@@ -38,13 +38,31 @@ Cypress.Commands.add('checkA11y', (context, options, violationCallback) => {
       return cy.wrap(violations, { log: false })
     })
     .then(violations => {
-      assert.equal(
-        violations.length,
-        0,
-        `${violations.length} accessibility violation${
-          violations.length === 1 ? '' : 's'
-        } ${violations.length === 1 ? 'was' : 'were'} detected`
-      )
+      if(!skipFailures)  {
+        assert.equal(
+          violations.length,
+          0,
+          `${violations.length} accessibility violation${
+            violations.length === 1 ? '' : 's'
+          } ${violations.length === 1 ? 'was' : 'were'} detected`
+        )
+      } else {
+          cy.task('log', violations.length === 0 ? "No violations were detected!": `${violations.length} accessibility violation${
+            violations.length === 1 ? '' : 's'
+          } ${violations.length === 1 ? 'was' : 'were'} detected`);
+          let header = "\n\n---------|impact|\t id|\t help|\t helpUrl|---------\n";
+          header = header + "----------------------------------------------------------\n";
+          for(let v = 0 ; v < violations.length ; v++) {
+            if (v == 0) {
+              vDetail = header + `|${violations[v].impact}| ${violations[v].id}| ${violations[v].help}| ${violations[v].helpUrl}|\n`;
+            } else {
+              vDetail = vDetail + `|${violations[v].impact}| ${violations[v].id}| ${violations[v].help}| ${violations[v].helpUrl}|\n`;
+            }
+          }
+          if (violations.length > 0) {
+            cy.task('log',  vDetail);
+          }
+      }
     })
 })
 
