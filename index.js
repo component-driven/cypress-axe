@@ -26,7 +26,12 @@ Cypress.Commands.add('checkA11y', (context, options, violationCallback) => {
       if (violations.length) {
         if (violationCallback) violationCallback(violations)
         cy.wrap(violations, { log: false }).each(v => {
+          const selectors = v.nodes
+            .reduce((acc, node) => acc.concat(node.target), [])
+            .join(', ')
+        
           Cypress.log({
+            $el: Cypress.$(selectors),
             name: 'a11y error!',
             consoleProps: () => v,
             message: `${v.id} on ${v.nodes.length} Node${
