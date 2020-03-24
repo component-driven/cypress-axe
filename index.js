@@ -1,7 +1,7 @@
 Cypress.Commands.add('injectAxe', () => {
   cy.window({ log: false }).then(window => {
     const axe = require('axe-core')
-    window.eval(axe.source)
+    window.axe = axe.default || axe
   })
 })
 
