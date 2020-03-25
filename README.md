@@ -129,6 +129,7 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/all-contri
     <td align="center"><a href="https://github.com/miketoth"><img src="https://avatars2.githubusercontent.com/u/2512676?v=4" width="100px;" alt=""/><br /><sub><b>Michael Toth</b></sub></a><br /><a href="https://github.com/avanslaars/cypress-axe/commits?author=miketoth" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/NicholasBoll"><img src="https://avatars2.githubusercontent.com/u/338257?v=4" width="100px;" alt=""/><br /><sub><b>Nicholas Boll</b></sub></a><br /><a href="https://github.com/avanslaars/cypress-axe/commits?author=NicholasBoll" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/michaeljacobdavis"><img src="https://avatars2.githubusercontent.com/u/916905?v=4" width="100px;" alt=""/><br /><sub><b>Mike Davis</b></sub></a><br /><a href="https://github.com/avanslaars/cypress-axe/commits?author=michaeljacobdavis" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/chit786"><img src="https://avatars2.githubusercontent.com/u/18376182?v=4" width="100px;" alt=""/><br /><sub><b>chit786</b></sub></a><br /><a href="https://github.com/avanslaars/cypress-axe/commits?author=chit786" title="Code">💻</a> <a href="https://github.com/avanslaars/cypress-axe/commits?author=chit786" title="Documentation">📖</a></td>
   </tr>
 </table>
 
