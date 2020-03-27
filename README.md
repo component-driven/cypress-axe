@@ -131,6 +131,7 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/all-contri
     <td align="center"><a href="https://github.com/michaeljacobdavis"><img src="https://avatars2.githubusercontent.com/u/916905?v=4" width="100px;" alt=""/><br /><sub><b>Mike Davis</b></sub></a><br /><a href="https://github.com/avanslaars/cypress-axe/commits?author=michaeljacobdavis" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/chit786"><img src="https://avatars2.githubusercontent.com/u/18376182?v=4" width="100px;" alt=""/><br /><sub><b>chit786</b></sub></a><br /><a href="https://github.com/avanslaars/cypress-axe/commits?author=chit786" title="Code">💻</a> <a href="https://github.com/avanslaars/cypress-axe/commits?author=chit786" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/acourdavault"><img src="https://avatars0.githubusercontent.com/u/27222128?v=4" width="100px;" alt=""/><br /><sub><b>Adrien courdavault</b></sub></a><br /><a href="https://github.com/avanslaars/cypress-axe/commits?author=acourdavault" title="Code">💻</a></td>
+    <td align="center"><a href="http://brett-zamir.me"><img src="https://avatars3.githubusercontent.com/u/20234?v=4" width="100px;" alt=""/><br /><sub><b>Brett Zamir</b></sub></a><br /><a href="https://github.com/avanslaars/cypress-axe/commits?author=brettz9" title="Code">💻</a></td>
   </tr>
 </table>
 
