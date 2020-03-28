@@ -2,10 +2,10 @@
   "name": "cypress-axe",
   "version": "0.6.1",
   "files": [
-    "index.js"
+    "dist"
   ],
   "description": "Custom cypress commands to inject axe-core and test for a11y",
-  "main": "index.js",
+  "main": "dist/index.js",
   "keywords": [
     "a11y",
     "accessibility",
@@ -13,8 +13,10 @@
     "axe-core",
     "cypress"
   ],
+  "scripts": {
+    "build": "parcel build src/index.js --bundle-node-modules"
+  },
   "peerDependencies": {
-    "axe-core": "^3.1.2",
     "cypress": "^3.1.1 || ^4.0.2"
   },
   "author": "Andy Van Slaars",
@@ -27,7 +29,8 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "axe-core": "^3.1.2"
+    "axe-core": "^3.4.1",
+    "parcel-bundler": "^1.12.4"
   },
   "dependencies": {},
   "repository": {
