@@ -1,4 +1,5 @@
 # cypress-axe
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
 
 This package provides three simple [Cypress](https://cypress.io) commands to help test your applications for accessibility issues using [axe-core](https://github.com/dequelabs/axe-core).
@@ -14,8 +15,10 @@ npm i -D cypress-axe
 ### Install peer dependencies:
 
 ```sh
-npm i -D cypress axe-core
+npm i -D cypress
 ```
+
+**NOTE:** _axe-core is now bundled and doesn't need to be installed as a peer dependency_
 
 ### Include the commands
 
@@ -43,12 +46,15 @@ beforeEach(() => {
   cy.injectAxe()
 })
 ```
+
 ### cy.configureAxe
 
 #### Purpose
+
 To configure the format of the data used by aXe. This can be used to add new rules, which must be registered with the library to execute.
 
 #### Description
+
 User specifies the format of the JSON structure passed to the callback of axe.run
 
 [Link - aXe Docs: axe.configure](https://www.deque.com/axe/documentation/api-documentation/#api-name-axeconfigure)
@@ -61,7 +67,7 @@ it('Has no detectable a11y violations on load (custom configuration)', () => {
       brand: String,
       application: String
     },
-    reporter: "option",
+    reporter: 'option',
     checks: [Object],
     rules: [Object],
     locale: Object
@@ -75,6 +81,7 @@ it('Has no detectable a11y violations on load (custom configuration)', () => {
 This will run axe against the document at the point in which it is called. This means you can call this after interacting with your page and uncover accessibility issues introduced as a result of rendering in response to user actions.
 
 #### Parameters on cy.checkA11y (axe.run)
+
 context: (optional) Defines the scope of the analysis - the part of the DOM that you would like to analyze. This will typically be the document or a specific selector such as class name, ID, selector, etc.
 
 options: (optional) Set of options passed into rules or checks, temporarily modifying them. This contrasts with axe.configure, which is more permanent.
@@ -89,14 +96,12 @@ it('Has no detectable a11y violations on load', () => {
 
 it('Has no detectable a11y violations on load (with custom parameters)', () => {
   // Test the page at initial load (with context and options)
-  cy.checkA11y(
-    ".example-class", {
-      runOnly: {
-        type: "tag",
-        values: ["wcag2a"]
-      }
+  cy.checkA11y('.example-class', {
+    runOnly: {
+      type: 'tag',
+      values: ['wcag2a']
     }
-  )
+  })
 })
 
 it('Has no a11y violations after button click', () => {
@@ -106,7 +111,7 @@ it('Has no a11y violations after button click', () => {
 })
 ```
 
-Optionally you can also pass additional argument `skipFailures` to disable the failures and only log them to the console output 
+Optionally you can also pass additional argument `skipFailures` to disable the failures and only log them to the console output
 
 Reference : https://github.com/avanslaars/cypress-axe/issues/17
 
@@ -137,6 +142,7 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/all-contri
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
