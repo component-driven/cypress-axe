@@ -14,12 +14,7 @@ export const configureAxe = (configurationOptions = {}) => {
   })
 }
 
-const checkA11y = (
-  context,
-  options,
-  violationCallback,
-  skipFailures = false
-) => {
+export const reportA11y = (context, options, violationCallback) => {
   cy.window({ log: false })
     .then(win => {
       if (isEmptyObjectorNull(context)) context = undefined
@@ -37,7 +32,6 @@ const checkA11y = (
         })
     })
     .then(violations => {
-      console.log('In violations then', { violations })
       if (violations.length) {
         if (violationCallback) {
           violationCallback(violations)
@@ -60,31 +54,41 @@ const checkA11y = (
 
       return cy.wrap(violations, { log: false })
     })
-    .then(violations => {
-      if (!skipFailures) {
-        assert.equal(
-          violations.length,
-          0,
-          `${violations.length} accessibility violation${
+}
+
+export const checkA11y = (
+  context,
+  options,
+  violationCallback,
+  skipFailures = false
+) => {
+  cy.reportA11y(context, options, violationCallback).then(violations => {
+    if (!skipFailures) {
+      assert.equal(
+        violations.length,
+        0,
+        `${violations.length} accessibility violation${
+          violations.length === 1 ? '' : 's'
+        } ${violations.length === 1 ? 'was' : 'were'} detected`
+      )
+    } else {
+      if (violations.length) {
+        Cypress.log({
+          name: 'a11y violation summary',
+          message: `${violations.length} accessibility violation${
             violations.length === 1 ? '' : 's'
           } ${violations.length === 1 ? 'was' : 'were'} detected`
-        )
-      } else {
-        if (violations.length) {
-          Cypress.log({
-            name: 'a11y violation summary',
-            message: `${violations.length} accessibility violation${
-              violations.length === 1 ? '' : 's'
-            } ${violations.length === 1 ? 'was' : 'were'} detected`
-          })
-        }
+        })
       }
-    })
+    }
+  })
 }
 
 Cypress.Commands.add('injectAxe', injectAxe)
 
 Cypress.Commands.add('configureAxe', configureAxe)
+
+Cypress.Commands.add('reportA11y', reportA11y)
 
 Cypress.Commands.add('checkA11y', checkA11y)
 
