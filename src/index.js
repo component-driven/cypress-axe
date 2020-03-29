@@ -37,7 +37,6 @@ const checkA11y = (
         })
     })
     .then(violations => {
-      console.log('In violations then', { violations })
       if (violations.length) {
         if (violationCallback) {
           violationCallback(violations)
