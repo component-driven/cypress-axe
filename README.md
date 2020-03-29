@@ -36,7 +36,7 @@ import 'cypress-axe'
 
 ### cy.injectAxe
 
-This will inject the `axe-core` runtime into the page under test. You must run this after a call to `cy.visit()` and before you run the `checkA11y` command.
+This will inject the `axe-core` runtime into the page under test. You must run this **after** a call to `cy.visit()` and before you run the `checkA11y` command.
 
 You run this command with `cy.injectAxe()` either in your test, or in a `beforeEach`, as long as the `visit` comes first.
 
@@ -82,18 +82,44 @@ This will run axe against the document at the point in which it is called. This 
 
 #### Parameters on cy.checkA11y (axe.run)
 
-context: (optional) Defines the scope of the analysis - the part of the DOM that you would like to analyze. This will typically be the document or a specific selector such as class name, ID, selector, etc.
+##### context (optional)
 
-options: (optional) Set of options passed into rules or checks, temporarily modifying them. This contrasts with axe.configure, which is more permanent.
+Defines the scope of the analysis - the part of the DOM that you would like to analyze. This will typically be the document or a specific selector such as class name, ID, selector, etc.
 
-[Link - aXe Docs: axe.run Parameters](https://www.deque.com/axe/documentation/api-documentation/#parameters-axerun)
+##### options (optional)
+
+Set of options passed into rules or checks, temporarily modifying them. This contrasts with axe.configure, which is more permanent.
+
+The keys consist of [those accepted by `axe.run`'s options argument](https://www.deque.com/axe/documentation/api-documentation/#parameters-axerun) as well as a custom `includedImpacts` key.
+
+The `includedImpacts` key is an array of strings that map to `impact` levels in violations. Specifying this array will only include violations where the impact matches one of the included values. Possible impact values are "minor", "moderate", "serious", or "critical".
+
+Filtering based on impact in combination with the `skipFailures` argument allows you to introduce `cypress-axe` into tests for a legacy application without failing in CI before you have an opportunity to address accessibility issues. Ideally, you would steadily move towards stricter testing as you address issues.
+
+##### violationCallback (optional)
+
+Allows you to define a callback that receives the violations for custom side-effects, such as adding custom output to the terminal.
+
+**NOTE:** _This respects the `includedImpacts` filter and will only execute with violations that are included._
+
+###### skipFailures (optional, defaults to false)
+
+Disables assertions based on violations and only logs violations to the console output. This enabled you to see violations while allowing your tests to pass. This should be used as a temporary measure while you address accessibility violations.
+
+Reference : https://github.com/avanslaars/cypress-axe/issues/17
+
+### Examples
+
+#### Basic usage
 
 ```js
+// Basic usage
 it('Has no detectable a11y violations on load', () => {
   // Test the page at initial load
   cy.checkA11y()
 })
 
+// Applying a context and run parameters
 it('Has no detectable a11y violations on load (with custom parameters)', () => {
   // Test the page at initial load (with context and options)
   cy.checkA11y('.example-class', {
@@ -104,6 +130,14 @@ it('Has no detectable a11y violations on load (with custom parameters)', () => {
   })
 })
 
+it('Has no detectable a11y violations on load (filtering to only include critical impact violations)', () => {
+  // Test on initial load, only report and assert for critical impact items
+  cy.checkA11y(null, {
+    includedImpacts: ['critical']
+  })
+})
+
+// Basic usage after interacting with the page
 it('Has no a11y violations after button click', () => {
   // Interact with the page, then check for a11y issues
   cy.get('button').click()
@@ -111,11 +145,70 @@ it('Has no a11y violations after button click', () => {
 })
 ```
 
-Optionally you can also pass additional argument `skipFailures` to disable the failures and only log them to the console output
+#### Using the violationCallback argument
 
-Reference : https://github.com/avanslaars/cypress-axe/issues/17
+The violation callback parameter accepts a function and allows you to add custom behavior when violations are found.
 
-## Output
+This example adds custom logging to the terminal running Cypress, using `cy.task` and the `violationCallback` argument for `cy.checkA11y`
+
+##### In Cypress plugins file
+
+This registers a `log` task as seen in the [Cypress docs for cy.task](https://docs.cypress.io/api/commands/task.html#Usage) as well as a `table` task for sending tabular data to the terminal.
+
+```js
+module.exports = (on, config) => {
+  on('task', {
+    log(message) {
+      console.log(message)
+
+      return null
+    },
+    table(message) {
+      console.table(message)
+
+      return null
+    }
+  })
+}
+```
+
+#### In your spec file
+
+Then we create a function that uses our tasks and pass it as the `validationCallback` argument to `cy.checkA11y`
+
+```js
+// Define at the top of the spec file or just import it
+function terminalLog(violations) {
+  cy.task(
+    'log',
+    `${violations.length} accessibility violation${
+      violations.length === 1 ? '' : 's'
+    } ${violations.length === 1 ? 'was' : 'were'} detected`
+  )
+  // pluck specific keys to keep the table readable
+  const violationData = violations.map(
+    ({ id, impact, description, nodes }) => ({
+      id,
+      impact,
+      description,
+      nodes: nodes.length
+    })
+  )
+
+  cy.task('table', violationData)
+}
+
+// Then in your test...
+it('Logs violations to the terminal', () => {
+  cy.checkA11y(null, null, terminalLog)
+})
+```
+
+This custom logging behavior results in terminal output like this:
+
+![Custom terminal logging with cy.task and validationCallback](terminal_output_example.png)
+
+## Standard Output
 
 When accessibility violations are detected, your test will fail and an entry titled "A11Y ERROR!" will be added to the command log for each type of violation found (they will be above the failed assertion). Clicking on those will reveal more specifics about the error in the DevTools console.
 
