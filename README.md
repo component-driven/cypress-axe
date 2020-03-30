@@ -28,10 +28,6 @@ Update `Cypress/support/index.js` file to include the cypress-axe commands by ad
 import 'cypress-axe'
 ```
 
-### Add a task to log the messages to the terminal when the cypress executes the spec files
-
-[Example - configuring log task](https://docs.cypress.io/api/commands/task.html#Usage)
-
 ## Commands
 
 ### cy.injectAxe
@@ -108,9 +104,15 @@ Disables assertions based on violations and only logs violations to the console 
 
 Reference : https://github.com/avanslaars/cypress-axe/issues/17
 
-### Examples
+### cy.reportA11y
 
-#### Basic usage
+This command executes `axe.run` with the passed in context and options and resolves with the violations. This command does not make any assertions, but allows you to chain on your own custom assertion
+
+#### Parameters on cy.checkA11y (axe.run)
+
+## Examples
+
+### Basic usage
 
 ```js
 // Basic usage
@@ -145,13 +147,13 @@ it('Has no a11y violations after button click', () => {
 })
 ```
 
-#### Using the violationCallback argument
+### Using the violationCallback argument
 
 The violation callback parameter accepts a function and allows you to add custom behavior when violations are found.
 
 This example adds custom logging to the terminal running Cypress, using `cy.task` and the `violationCallback` argument for `cy.checkA11y`
 
-##### In Cypress plugins file
+#### In Cypress plugins file
 
 This registers a `log` task as seen in the [Cypress docs for cy.task](https://docs.cypress.io/api/commands/task.html#Usage) as well as a `table` task for sending tabular data to the terminal.
 

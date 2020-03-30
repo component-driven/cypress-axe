@@ -14,12 +14,11 @@ export const configureAxe = (configurationOptions = {}) => {
   })
 }
 
-export const reportA11y = (context, options, violationCallback) => {
+export const reportA11y = (context, options) => {
   cy.window({ log: false })
     .then(win => {
       if (isEmptyObjectorNull(context)) context = undefined
       if (isEmptyObjectorNull(options)) options = undefined
-      if (isEmptyObjectorNull(violationCallback)) violationCallback = undefined
       const { includedImpacts, ...axeOptions } = options || {}
       return win.axe
         .run(context || win.document, axeOptions)
@@ -33,9 +32,6 @@ export const reportA11y = (context, options, violationCallback) => {
     })
     .then(violations => {
       if (violations.length) {
-        if (violationCallback) {
-          violationCallback(violations)
-        }
         cy.wrap(violations, { log: false }).each(v => {
           const selectors = v.nodes
             .reduce((acc, node) => acc.concat(node.target), [])
@@ -62,26 +58,37 @@ export const checkA11y = (
   violationCallback,
   skipFailures = false
 ) => {
-  cy.reportA11y(context, options, violationCallback).then(violations => {
-    if (!skipFailures) {
-      assert.equal(
-        violations.length,
-        0,
-        `${violations.length} accessibility violation${
-          violations.length === 1 ? '' : 's'
-        } ${violations.length === 1 ? 'was' : 'were'} detected`
-      )
-    } else {
-      if (violations.length) {
-        Cypress.log({
-          name: 'a11y violation summary',
-          message: `${violations.length} accessibility violation${
+  cy.reportA11y(context, options)
+    .then(violations => {
+      if (
+        violations.length &&
+        violationCallback &&
+        typeof violationCallback === 'function'
+      ) {
+        violationCallback(violations)
+      }
+      return cy.wrap(violations, { log: false })
+    })
+    .then(violations => {
+      if (!skipFailures) {
+        assert.equal(
+          violations.length,
+          0,
+          `${violations.length} accessibility violation${
             violations.length === 1 ? '' : 's'
           } ${violations.length === 1 ? 'was' : 'were'} detected`
-        })
+        )
+      } else {
+        if (violations.length) {
+          Cypress.log({
+            name: 'a11y violation summary',
+            message: `${violations.length} accessibility violation${
+              violations.length === 1 ? '' : 's'
+            } ${violations.length === 1 ? 'was' : 'were'} detected`
+          })
+        }
       }
-    }
-  })
+    })
 }
 
 Cypress.Commands.add('injectAxe', injectAxe)
