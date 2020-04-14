@@ -47,6 +47,17 @@ beforeEach(() => {
 })
 ```
 
+### Overwrite cy.visit to include cy.injectAxe
+
+This will overwrite the `cy.visit()` command. Each time the `cy.visit()` command resolves the `axe-core` runtime is injected into the page.
+
+To overwrite the `cy.visit()` command update the `Cypress/support/index.js` file and add these lines up top:
+
+```js
+import { overwriteVisitCommand } from 'cypress-axe'
+overwriteVisitCommand()
+```
+
 ### cy.configureAxe
 
 #### Purpose

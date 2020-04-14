@@ -14,6 +14,14 @@ export const configureAxe = (configurationOptions = {}) => {
   })
 }
 
+export const overwriteVisitCommand = () => {
+  Cypress.Commands.overwrite('visit', (originalFn, url, options = {}) => {
+    return originalFn(url, options).then((window) => {
+      window.eval(axe)
+    })
+  })
+}
+
 const checkA11y = (
   context,
   options,
