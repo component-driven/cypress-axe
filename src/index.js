@@ -18,7 +18,8 @@ const checkA11y = (
   context,
   options,
   violationCallback,
-  skipFailures = false
+  skipFailures = false,
+  failureThreshold = 0
 ) => {
   cy.window({ log: false })
     .then(win => {
@@ -61,9 +62,9 @@ const checkA11y = (
     })
     .then(violations => {
       if (!skipFailures) {
-        assert.equal(
+        assert.isAtMost(
           violations.length,
-          0,
+          failureThreshold,
           `${violations.length} accessibility violation${
             violations.length === 1 ? '' : 's'
           } ${violations.length === 1 ? 'was' : 'were'} detected`

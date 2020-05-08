@@ -108,6 +108,10 @@ Disables assertions based on violations and only logs violations to the console 
 
 Reference : https://github.com/avanslaars/cypress-axe/issues/17
 
+###### failureThreshold (optional, defaults to 0)
+
+Allows you to configure the number of violations that will cause the assertion to fail. This should be used as a temporary measure while you address accessibility violations, but can help validate that you're not regressing as you progress towards 0 violations. 
+
 ### Examples
 
 #### Basic usage
