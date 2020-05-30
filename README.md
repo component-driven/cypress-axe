@@ -28,9 +28,26 @@ Update `Cypress/support/index.js` file to include the cypress-axe commands by ad
 import 'cypress-axe'
 ```
 
+### Add types (typescript only)
+
+```sh
+npm i -D @types/axe-core @types/cypress-axe
+```
+Update `Cypress/tsconfig.json` file to include the cypress-axe and axe-core types:
+
+```json
+{
+  "compilerOptions": {
+    "types": ["cypress", "cypress-axe", "axe-core"]
+  }
+}
+```
+
+
 ### Add a task to log the messages to the terminal when the cypress executes the spec files
 
 [Example - configuring log task](https://docs.cypress.io/api/commands/task.html#Usage)
+
 
 ## Commands
 
