@@ -18,12 +18,14 @@ const checkA11y = (
   context,
   options,
   violationCallback,
-  skipFailures = false
+  skipFailures = false,
+  message
 ) => {
   cy.window({ log: false })
     .then(win => {
       if (isEmptyObjectorNull(context)) context = undefined
       if (isEmptyObjectorNull(options)) options = undefined
+      if (isEmptyObjectorNull(message)) message = context === undefined ? '' : context
       if (isEmptyObjectorNull(violationCallback)) violationCallback = undefined
       const { includedImpacts, ...axeOptions } = options || {}
       return win.axe
@@ -39,7 +41,7 @@ const checkA11y = (
     .then(violations => {
       if (violations.length) {
         if (violationCallback) {
-          violationCallback(violations)
+          violationCallback(violations, message)
         }
         cy.wrap(violations, { log: false }).each(v => {
           const selectors = v.nodes
