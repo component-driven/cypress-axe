@@ -1,6 +1,6 @@
 {
   "name": "cypress-axe",
-  "version": "0.8.2",
+  "version": "0.8.1",
   "files": [
     "dist"
   ],
@@ -29,7 +29,7 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "axe-core": "^4.0.2",
+    "axe-core": "^4.0.1",
     "parcel-bundler": "^1.12.4"
   },
   "dependencies": {},

@@ -1,6 +1,6 @@
 {
   "name": "cypress-axe",
-  "version": "0.8.2",
+  "version": "0.8.1",
   "lockfileVersion": 1,
   "requires": true,
   "dependencies": {
@@ -1305,9 +1305,9 @@
       "dev": true
     },
     "axe-core": {
-      "version": "4.0.2",
-      "resolved": "https://registry.npmjs.org/axe-core/-/axe-core-4.0.2.tgz",
-      "integrity": "sha512-arU1h31OGFu+LPrOLGZ7nB45v940NMDMEJeNmbutu57P+UFDVnkZg3e+J1I2HJRZ9hT7gO8J91dn/PMrAiKakA==",
+      "version": "3.4.1",
+      "resolved": "https://registry.npmjs.org/axe-core/-/axe-core-3.4.1.tgz",
+      "integrity": "sha512-+EhIdwR0hF6aeMx46gFDUy6qyCfsL0DmBrV3Z+LxYbsOd8e1zBaPHa3f9Rbjsz2dEwSBkLw6TwML/CAIIAqRpw==",
       "dev": true
     },
     "babel-plugin-dynamic-import-node": {
