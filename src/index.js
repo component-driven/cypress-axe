@@ -1,10 +1,11 @@
 const fs = require('fs')
 
-const axe = fs.readFileSync('node_modules/axe-core/axe.min.js', 'utf8')
+const defaultAxeSource = fs.readFileSync('node_modules/axe-core/axe.min.js', 'utf8')
 
-export const injectAxe = () => {
+export const injectAxe = (axeSource) => {
   cy.window({ log: false }).then(window => {
-    window.eval(axe)
+    const axeScript = axeSource == null ? defaultAxeSource : axeSource
+    window.eval(axeScript)
   })
 }
 
