@@ -18,28 +18,33 @@ const checkA11y = (
   context,
   options,
   violationCallback,
-  skipFailures = false
+  resultsCallback,
+  skipFailures = false,
 ) => {
   cy.window({ log: false })
     .then(win => {
       if (isEmptyObjectorNull(context)) context = undefined
       if (isEmptyObjectorNull(options)) options = undefined
       if (isEmptyObjectorNull(violationCallback)) violationCallback = undefined
+      if (isEmptyObjectorNull(resultsCallback)) resultsCallback = undefined
       const { includedImpacts, ...axeOptions } = options || {}
       return win.axe
         .run(context || win.document, axeOptions)
-        .then(({ violations }) => {
-          return includedImpacts &&
-            Array.isArray(includedImpacts) &&
-            Boolean(includedImpacts.length)
-            ? violations.filter(v => includedImpacts.includes(v.impact))
-            : violations
+        .then((results) => {
+          if (includedImpacts && Array.isArray(includedImpacts) && Boolean(includedImpacts.length)) {
+            results.violations.filter(v => includedImpacts.includes(v.impact))
+          }
+          return results
         })
     })
-    .then(violations => {
+    .then(results => {
+      const violations = results.violations
       if (violations.length) {
         if (violationCallback) {
           violationCallback(violations)
+        }
+        if (resultsCallback) {
+          resultsCallback(results)
         }
         cy.wrap(violations, { log: false }).each(v => {
           const selectors = v.nodes
