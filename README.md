@@ -102,7 +102,7 @@ Allows you to define a callback that receives the violations for custom side-eff
 
 **NOTE:** _This respects the `includedImpacts` filter and will only execute with violations that are included._
 
-###### skipFailures (optional, defaults to false)
+##### skipFailures (optional, defaults to false)
 
 Disables assertions based on violations and only logs violations to the console output. This enabled you to see violations while allowing your tests to pass. This should be used as a temporary measure while you address accessibility violations.
 
