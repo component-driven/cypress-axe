@@ -1,5 +1,7 @@
 # cypress-axe
 
+[![npm](https://img.shields.io/npm/v/cypress-axe.svg)](https://www.npmjs.com/package/cypress-axe)
+
 This package provides three simple [Cypress](https://cypress.io) commands to help test your applications for accessibility issues using [axe-core](https://github.com/dequelabs/axe-core).
 
 ## Install and configure
