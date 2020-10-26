@@ -16,6 +16,9 @@
     "posttest": "npm run format",
     "format": "prettier --loglevel warn --write \"**/*.{js,md}\""
   },
+  "engines": {
+    "node": ">=10"
+  },
   "dependencies": {},
   "peerDependencies": {
     "cypress": "^3.1.1 || ^4.0.2"
