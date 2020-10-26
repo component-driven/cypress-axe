@@ -1,7 +1,5 @@
 # cypress-axe
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
-
 This package provides three simple [Cypress](https://cypress.io) commands to help test your applications for accessibility issues using [axe-core](https://github.com/dequelabs/axe-core).
 
 ## Install and configure
@@ -214,6 +212,10 @@ When accessibility violations are detected, your test will fail and an entry tit
 
 ![Cypress and DevTools output for passing and failing axe-core audits](cmd_log.png)
 
+## Authors
+
+The project was created by [Andy Van Slaars](https://vanslaars.io/), and maintained by [Artem Sapegin](https://sapegin.me).
+
 ## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://github.com/all-contributors/all-contributors#emoji-key)):
@@ -239,3 +241,7 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/all-contri
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+## License
+
+MIT License, see the included [License.md](License.md) file.
