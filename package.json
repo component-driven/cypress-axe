@@ -1,44 +1,40 @@
 {
   "name": "cypress-axe",
   "version": "0.8.1",
+  "license": "MIT",
+  "description": "Test accessibility with axe-core in Cypress",
+  "homepage": "https://github.com/component-driven/cypress-axe",
+  "repository": "component-driven/cypress-axe",
   "files": [
     "dist"
   ],
-  "description": "Custom cypress commands to inject axe-core and test for a11y",
   "main": "dist/index.js",
+  "scripts": {
+    "build": "parcel build src/index.js --bundle-node-modules"
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "cypress": "^3.1.1 || ^4.0.2"
+  },
+  "devDependencies": {
+    "axe-core": "^3.4.1",
+    "parcel-bundler": "^1.12.4"
+  },
+  "authors": [
+    {
+      "name": "Andy Van Slaars",
+      "url": "https://vanslaars.io"
+    },
+    {
+      "name": "Artem Sapegin",
+      "url": "https://sapegin.me"
+    }
+  ],
   "keywords": [
     "a11y",
     "accessibility",
     "axe",
     "axe-core",
     "cypress"
-  ],
-  "scripts": {
-    "build": "parcel build src/index.js --bundle-node-modules"
-  },
-  "peerDependencies": {
-    "cypress": "^3.1.1 || ^4.0.2"
-  },
-  "author": "Andy Van Slaars",
-  "contributors": [
-    {
-      "name": "Samuel Anthony Custer",
-      "email": "samuel.a.custer@gmail.com",
-      "url": "https://samcus.co"
-    }
-  ],
-  "license": "MIT",
-  "devDependencies": {
-    "axe-core": "^3.4.1",
-    "parcel-bundler": "^1.12.4"
-  },
-  "dependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/avanslaars/cypress-axe.git"
-  },
-  "bugs": {
-    "url": "https://github.com/avanslaars/cypress-axe/issues"
-  },
-  "homepage": "https://github.com/avanslaars/cypress-axe#readme"
+  ]
 }
