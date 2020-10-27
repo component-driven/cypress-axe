@@ -14,7 +14,8 @@
     "lint": "eslint . --cache --fix",
     "pretest": "npm run lint",
     "posttest": "npm run format",
-    "format": "prettier --loglevel warn --write \"**/*.{js,md}\""
+    "format": "prettier --loglevel warn --write \"**/*.{js,md}\"",
+    "prepublishOnly": "npm run build"
   },
   "engines": {
     "node": ">=10"
