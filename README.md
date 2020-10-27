@@ -2,35 +2,29 @@
 
 [![npm](https://img.shields.io/npm/v/cypress-axe.svg)](https://www.npmjs.com/package/cypress-axe)
 
-This package provides three simple [Cypress](https://cypress.io) commands to help test your applications for accessibility issues using [axe-core](https://github.com/dequelabs/axe-core).
+Test accessibility with [axe-core](https://github.com/dequelabs/axe-core) in [Cypress](https://cypress.io).
 
-## Install and configure
+## Installation
 
-### Add as a dev dependency:
-
-```sh
-npm i -D cypress-axe
-```
-
-### Install peer dependencies:
+1. **Install `cypress-axe` from npm:**
 
 ```sh
-npm i -D cypress
+npm install --save-dev cypress-axe
 ```
 
-**NOTE:** _axe-core is now bundled and doesn't need to be installed as a peer dependency_
+2. **Install peer dependencies:**
 
-### Include the commands
+```sh
+npm install --save-dev cypress axe-core
+```
 
-Update `Cypress/support/index.js` file to include the cypress-axe commands by adding:
+3. **Include the commands.** Update `cypress/support/index.js` file to include the cypress-axe commands by adding:
 
 ```js
 import 'cypress-axe'
 ```
 
-### Add a task to log the messages to the terminal when the cypress executes the spec files
-
-[Example - configuring log task](https://docs.cypress.io/api/commands/task.html#Usage)
+4. **Add a task to log the messages to the terminal** when Cypress executes the spec files. [Example - configuring log task](https://docs.cypress.io/api/commands/task.html#Usage).
 
 ## Commands
 

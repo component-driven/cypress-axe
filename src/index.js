@@ -1,10 +1,8 @@
-const fs = require('fs');
-
-const axe = fs.readFileSync('node_modules/axe-core/axe.min.js', 'utf8');
+import axe from 'axe-core';
 
 export const injectAxe = () => {
 	cy.window({ log: false }).then((window) => {
-		window.eval(axe);
+		window.eval(axe.source);
 	});
 };
 
