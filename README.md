@@ -1,6 +1,6 @@
 # cypress-axe
 
-[![npm](https://img.shields.io/npm/v/cypress-axe.svg)](https://www.npmjs.com/package/cypress-axe)
+[![npm](https://img.shields.io/npm/v/cypress-axe.svg)](https://www.npmjs.com/package/cypress-axe) [![Node.js CI status](https://github.com/component-driven/cypress-axe/workflows/Node.js%20CI/badge.svg)](https://github.com/component-driven/cypress-axe/actions)
 
 Test accessibility with [axe-core](https://github.com/dequelabs/axe-core) in [Cypress](https://cypress.io).
 
