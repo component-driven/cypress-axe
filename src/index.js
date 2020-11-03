@@ -1,9 +1,9 @@
-import axe from 'axe-core';
-
 export const injectAxe = () => {
-	cy.window({ log: false }).then((window) => {
-		window.eval(axe.source);
-	});
+	cy.readFile(require.resolve('axe-core/axe.min.js')).then((source) =>
+		cy.window({ log: false }).then((window) => {
+			window.eval(source);
+		})
+	);
 };
 
 export const configureAxe = (configurationOptions = {}) => {
