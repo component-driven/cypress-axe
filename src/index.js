@@ -12,75 +12,32 @@ export const configureAxe = (configurationOptions = {}) => {
 	});
 };
 
+//TODO demo how to filter included impacts
+// return includedImpacts &&
+// 	Array.isArray(includedImpacts) &&
+// 	Boolean(includedImpacts.length)
+// 	? violations.filter((v) => includedImpacts.includes(v.impact))
+// 	: violations;
 const checkA11y = (
-	context,
-	options,
-	violationCallback,
-	skipFailures = false
+	// context,
+	// options,
+	// violationCallback,
+	// skipFailures = false
+	args
 ) => {
-	cy.window({ log: false })
-		.then((win) => {
-			if (isEmptyObjectorNull(context)) {
-				context = undefined;
-			}
-			if (isEmptyObjectorNull(options)) {
-				options = undefined;
-			}
-			if (isEmptyObjectorNull(violationCallback)) {
-				violationCallback = undefined;
-			}
-			const { includedImpacts, ...axeOptions } = options || {};
-			return win.axe
-				.run(context || win.document, axeOptions)
-				.then(({ violations }) => {
-					return includedImpacts &&
-						Array.isArray(includedImpacts) &&
-						Boolean(includedImpacts.length)
-						? violations.filter((v) => includedImpacts.includes(v.impact))
-						: violations;
-				});
-		})
-		.then((violations) => {
-			if (violations.length) {
-				if (violationCallback) {
-					violationCallback(violations);
-				}
-				cy.wrap(violations, { log: false }).each((v) => {
-					const selectors = v.nodes
-						.reduce((acc, node) => acc.concat(node.target), [])
-						.join(', ');
+	let context = args.context;
+	let options = args.options; // rename to axeOptions
 
-					Cypress.log({
-						$el: Cypress.$(selectors),
-						name: 'a11y error!',
-						consoleProps: () => v,
-						message: `${v.id} on ${v.nodes.length} Node${
-							v.nodes.length === 1 ? '' : 's'
-						}`,
-					});
-				});
-			}
-
-			return cy.wrap(violations, { log: false });
-		})
-		.then((violations) => {
-			if (!skipFailures) {
-				assert.equal(
-					violations.length,
-					0,
-					`${violations.length} accessibility violation${
-						violations.length === 1 ? '' : 's'
-					} ${violations.length === 1 ? 'was' : 'were'} detected`
-				);
-			} else if (violations.length) {
-				Cypress.log({
-					name: 'a11y violation summary',
-					message: `${violations.length} accessibility violation${
-						violations.length === 1 ? '' : 's'
-					} ${violations.length === 1 ? 'was' : 'were'} detected`,
-				});
-			}
-		});
+	cy.window({ log: false }).then((win) => {
+		if (isEmptyObjectorNull(context)) {
+			context = undefined;
+		}
+		if (isEmptyObjectorNull(options)) {
+			options = undefined;
+		}
+		const { ...axeOptions } = options || {};
+		return win.axe.run(context || win.document, axeOptions);
+	});
 };
 
 Cypress.Commands.add('injectAxe', injectAxe);

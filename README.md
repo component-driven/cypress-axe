@@ -84,23 +84,7 @@ Defines the scope of the analysis - the part of the DOM that you would like to a
 
 Set of options passed into rules or checks, temporarily modifying them. This contrasts with axe.configure, which is more permanent.
 
-The keys consist of [those accepted by `axe.run`'s options argument](https://www.deque.com/axe/documentation/api-documentation/#parameters-axerun) as well as a custom `includedImpacts` key.
-
-The `includedImpacts` key is an array of strings that map to `impact` levels in violations. Specifying this array will only include violations where the impact matches one of the included values. Possible impact values are "minor", "moderate", "serious", or "critical".
-
-Filtering based on impact in combination with the `skipFailures` argument allows you to introduce `cypress-axe` into tests for a legacy application without failing in CI before you have an opportunity to address accessibility issues. Ideally, you would steadily move towards stricter testing as you address issues.
-
-##### violationCallback (optional)
-
-Allows you to define a callback that receives the violations for custom side-effects, such as adding custom output to the terminal.
-
-**NOTE:** _This respects the `includedImpacts` filter and will only execute with violations that are included._
-
-##### skipFailures (optional, defaults to false)
-
-Disables assertions based on violations and only logs violations to the console output. This enabled you to see violations while allowing your tests to pass. This should be used as a temporary measure while you address accessibility violations.
-
-Reference : https://github.com/component-driven/cypress-axe/issues/17
+The keys consist of [those accepted by `axe.run`'s options argument](https://www.deque.com/axe/documentation/api-documentation/#parameters-axerun).
 
 ### Examples
 
@@ -116,18 +100,36 @@ it('Has no detectable a11y violations on load', () => {
 // Applying a context and run parameters
 it('Has no detectable a11y violations on load (with custom parameters)', () => {
   // Test the page at initial load (with context and options)
-  cy.checkA11y('.example-class', {
+  let results = cy.checkA11y('.example-class', {
     runOnly: {
       type: 'tag',
       values: ['wcag2a']
     }
-  })
+  });
+  // todo add example of printing results to console
+  assert.equal(
+    results.violations.length,
+    0,
+    `${results.violations.length} accessibility violation${
+      results.violations.length === 1 ? '' : 's'
+    } ${results.violations.length === 1 ? 'was' : 'were'} detected`
+  );
 })
 
 it('Has no detectable a11y violations on load (filtering to only include critical impact violations)', () => {
   // Test on initial load, only report and assert for critical impact items
-  cy.checkA11y(null, {
-    includedImpacts: ['critical']
+  let results cy.checkA11y()
+
+// todo verify this code works
+  let includedImpacts = ['best-practice']
+  let filteredResults = results.violations.filter((v) => includedImpacts.includes(v.impact));
+  assert.equal(
+    filteredResults.violations.length,
+    0,
+    `${filteredResults.violations.length} accessibility violation${
+      filteredDesults.violations.length === 1 ? '' : 's'
+    } ${filteredResults.violations.length === 1 ? 'was' : 'were'} detected`
+  );
   })
 })
 
@@ -136,14 +138,15 @@ it('Has no a11y violations after button click', () => {
   // Interact with the page, then check for a11y issues
   cy.get('button').click()
   cy.checkA11y()
+  assert.equal(
+    results.violations.length,
+    0,
+    `${results.violations.length} accessibility violation${
+      results.violations.length === 1 ? '' : 's'
+    } ${results.violations.length === 1 ? 'was' : 'were'} detected`
+  );
 })
 ```
-
-#### Using the violationCallback argument
-
-The violation callback parameter accepts a function and allows you to add custom behavior when violations are found.
-
-This example adds custom logging to the terminal running Cypress, using `cy.task` and the `violationCallback` argument for `cy.checkA11y`
 
 ##### In Cypress plugins file
 
