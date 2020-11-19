@@ -8,7 +8,8 @@
 		"esModuleInterop": true,
 		"noUnusedLocals": true,
 		"allowSyntheticDefaultImports": true,
-		"outDir": "./dist"
+		"outDir": "./dist",
+		"types": ["node", "cypress"]
 	},
 	"include": ["src"]
 }

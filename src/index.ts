@@ -1,5 +1,17 @@
+import axe from 'axe-core';
+
+declare global {
+	interface Window {
+		axe: typeof axe;
+	}
+}
+
+interface Options extends axe.RunOptions {
+	includedImpacts?: string[];
+}
+
 export const injectAxe = () => {
-	cy.readFile(require.resolve('axe-core/axe.min.js')).then((source) =>
+	cy.readFile<string>(require.resolve('axe-core/axe.min.js')).then((source) =>
 		cy.window({ log: false }).then((window) => {
 			window.eval(source);
 		})
@@ -12,10 +24,17 @@ export const configureAxe = (configurationOptions = {}) => {
 	});
 };
 
+function isEmptyObjectorNull(value: any) {
+	if (value == null) {
+		return true;
+	}
+	return Object.entries(value).length === 0 && value.constructor === Object;
+}
+
 const checkA11y = (
-	context,
-	options,
-	violationCallback,
+	context?: axe.ElementContext,
+	options?: Options,
+	violationCallback?: (violations: axe.Result[]) => void,
 	skipFailures = false
 ) => {
 	cy.window({ log: false })
@@ -36,7 +55,9 @@ const checkA11y = (
 					return includedImpacts &&
 						Array.isArray(includedImpacts) &&
 						Boolean(includedImpacts.length)
-						? violations.filter((v) => includedImpacts.includes(v.impact))
+						? violations.filter(
+								(v) => v.impact && includedImpacts.includes(v.impact)
+						  )
 						: violations;
 				});
 		})
@@ -45,9 +66,9 @@ const checkA11y = (
 				if (violationCallback) {
 					violationCallback(violations);
 				}
-				cy.wrap(violations, { log: false }).each((v) => {
+				violations.forEach((v) => {
 					const selectors = v.nodes
-						.reduce((acc, node) => acc.concat(node.target), [])
+						.reduce<string[]>((acc, node) => acc.concat(node.target), [])
 						.join(', ');
 
 					Cypress.log({
@@ -88,10 +109,3 @@ Cypress.Commands.add('injectAxe', injectAxe);
 Cypress.Commands.add('configureAxe', configureAxe);
 
 Cypress.Commands.add('checkA11y', checkA11y);
-
-function isEmptyObjectorNull(value) {
-	if (value == null) {
-		return true;
-	}
-	return Object.entries(value).length === 0 && value.constructor === Object;
-}
