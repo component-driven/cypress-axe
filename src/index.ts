@@ -6,6 +6,17 @@ declare global {
 	}
 }
 
+declare global {
+	// eslint-disable-next-line @typescript-eslint/no-namespace
+	namespace Cypress {
+		interface Chainable {
+			injectAxe: typeof injectAxe;
+			configureAxe: typeof configureAxe;
+			checkA11y: typeof checkA11y;
+		}
+	}
+}
+
 interface Options extends axe.RunOptions {
 	includedImpacts?: string[];
 }
