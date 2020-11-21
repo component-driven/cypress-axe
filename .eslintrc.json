@@ -1,5 +1,5 @@
 {
-	"extends": "tamia",
+	"extends": "tamia/typescript",
 	"globals": {
 		"cy": false,
 		"Cypress": false,

@@ -26,6 +26,22 @@ import 'cypress-axe'
 
 4. **Add a task to log the messages to the terminal** when Cypress executes the spec files. [Example - configuring log task](https://docs.cypress.io/api/commands/task.html#Usage).
 
+### TypeScript
+
+If you’re using TypeScript, add cypress-axe types to your Cypress’ `tsconfig.json` file:
+
+```json
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "target": "es5",
+    "lib": ["esnext", "dom"],
+    "types": ["cypress", "cypress-axe"]
+  },
+  "include": ["."]
+}
+```
+
 ## Commands
 
 ### cy.injectAxe

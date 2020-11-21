@@ -9,6 +9,7 @@
     "dist"
   ],
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "lint": "eslint . --cache --fix",
@@ -32,6 +33,9 @@
     "cypress": "^3 || ^4 || ^5"
   },
   "devDependencies": {
+    "@types/node": "^14.14.8",
+    "@typescript-eslint/eslint-plugin": "^4.8.1",
+    "@typescript-eslint/parser": "^4.8.1",
     "axe-core": "^4.0.2",
     "cypress": "^5.5.0",
     "eslint": "^7.12.0",
