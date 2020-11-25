@@ -30,14 +30,14 @@
   "dependencies": {},
   "peerDependencies": {
     "axe-core": "^3 || ^4",
-    "cypress": "^3 || ^4 || ^5"
+    "cypress": "^3 || ^4 || ^5 || ^6"
   },
   "devDependencies": {
     "@types/node": "^14.14.8",
     "@typescript-eslint/eslint-plugin": "^4.8.1",
     "@typescript-eslint/parser": "^4.8.1",
     "axe-core": "^4.0.2",
-    "cypress": "^5.5.0",
+    "cypress": "^6.0.0",
     "eslint": "^7.12.0",
     "eslint-config-tamia": "^7.2.6",
     "http-server": "^0.12.3",
