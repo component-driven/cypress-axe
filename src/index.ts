@@ -42,11 +42,30 @@ function isEmptyObjectorNull(value: any) {
 	return Object.entries(value).length === 0 && value.constructor === Object;
 }
 
+function assertViolations(violations: axe.Result[]) {
+	assert.equal(
+		violations.length,
+		0,
+		`${violations.length} accessibility violation${
+			violations.length === 1 ? '' : 's'
+		} ${violations.length === 1 ? 'was' : 'were'} detected`
+	);
+}
+
+function logViolations(violations: axe.Result[]) {
+	Cypress.log({
+		name: 'a11y violation summary',
+		message: `${violations.length} accessibility violation${
+			violations.length === 1 ? '' : 's'
+		} ${violations.length === 1 ? 'was' : 'were'} detected`,
+	});
+}
+
 const checkA11y = (
 	context?: axe.ElementContext,
 	options?: Options,
 	violationCallback?: (violations: axe.Result[]) => void,
-	skipFailures = false
+	skipFailures: boolean | axe.ImpactValue[] = false
 ) => {
 	cy.window({ log: false })
 		.then((win) => {
@@ -96,21 +115,25 @@ const checkA11y = (
 			return cy.wrap(violations, { log: false });
 		})
 		.then((violations) => {
-			if (!skipFailures) {
-				assert.equal(
-					violations.length,
-					0,
-					`${violations.length} accessibility violation${
-						violations.length === 1 ? '' : 's'
-					} ${violations.length === 1 ? 'was' : 'were'} detected`
+			if (skipFailures === true) {
+				logViolations(violations);
+			} else if (Array.isArray(skipFailures) && skipFailures.length) {
+				// const unknownViolations = violations.filter(v => !v.impact); // null | undefined
+				const failableViolations = violations.filter(
+					(v) => v.impact && !skipFailures.includes(v.impact)
 				);
-			} else if (violations.length) {
-				Cypress.log({
-					name: 'a11y violation summary',
-					message: `${violations.length} accessibility violation${
-						violations.length === 1 ? '' : 's'
-					} ${violations.length === 1 ? 'was' : 'were'} detected`,
-				});
+				const warnOnlyViolations = violations.filter(
+					(v) => !v.impact || skipFailures.includes(v.impact)
+				);
+
+				if (warnOnlyViolations) {
+					logViolations(warnOnlyViolations);
+				}
+				if (failableViolations.length) {
+					assertViolations(failableViolations);
+				}
+			} else {
+				assertViolations(violations);
 			}
 		});
 };
