@@ -17,7 +17,7 @@ declare global {
 	}
 }
 
-interface Options extends axe.RunOptions {
+export interface Options extends axe.RunOptions {
 	includedImpacts?: string[];
 }
 
