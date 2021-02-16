@@ -22,7 +22,11 @@ export interface Options extends axe.RunOptions {
 }
 
 export const injectAxe = () => {
-	cy.readFile<string>(require.resolve('axe-core/axe.min.js')).then((source) =>
+	const fileName =
+		require?.resolve && typeof require?.resolve === 'function'
+			? require.resolve('axe-core/axe.min.js')
+			: 'node_modules/axe-core/axe.min.js';
+	cy.readFile<string>(fileName).then((source) =>
 		cy.window({ log: false }).then((window) => {
 			window.eval(source);
 		})
