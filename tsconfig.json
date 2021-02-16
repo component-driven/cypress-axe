@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"target": "es5",
+		"module": "CommonJS",
+		"moduleResolution": "node",
+		"strict": true,
+		"allowJs": true,
+		"esModuleInterop": true,
+		"noUnusedLocals": true,
+		"allowSyntheticDefaultImports": true,
+		"declaration": true,
+		"outDir": "./dist",
+		"types": ["node", "cypress"]
+	},
+	"include": ["src"]
+}

@@ -1,0 +1,8 @@
+{
+	"extends": "tamia/typescript",
+	"globals": {
+		"cy": false,
+		"Cypress": false,
+		"assert": false
+	}
+}
