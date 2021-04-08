@@ -153,6 +153,13 @@ it('Has no a11y violations after button click', () => {
   cy.get('button').click()
   cy.checkA11y()
 })
+
+it('Only logs a11y violations while allowing the test to pass', () => {
+  // Do not fail the test when there are accessibility failures
+  cy.checkA11y(null, null, null, {skipFailures: true});
+})
+
+
 ```
 
 #### Using the violationCallback argument
