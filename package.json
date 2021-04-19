@@ -27,25 +27,24 @@
   "engines": {
     "node": ">=10"
   },
-  "dependencies": {},
   "peerDependencies": {
     "axe-core": "^3 || ^4",
-    "cypress": "^3 || ^4 || ^5 || ^6"
+    "cypress": "^3 || ^4 || ^5 || ^6 || ^7"
   },
   "devDependencies": {
-    "@types/node": "^14.14.8",
-    "@typescript-eslint/eslint-plugin": "^4.8.1",
-    "@typescript-eslint/parser": "^4.8.1",
-    "axe-core": "^4.0.2",
-    "cypress": "^6.0.0",
-    "eslint": "^7.12.0",
+    "@types/node": "^14.14.41",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "axe-core": "^4",
+    "cypress": "^7",
+    "eslint": "^7.24.0",
     "eslint-config-tamia": "^7.2.6",
     "http-server": "^0.12.3",
     "husky": "^4.3.0",
-    "lint-staged": "^10.5.0",
-    "prettier": "^2.1.2",
-    "start-server-and-test": "^1.11.5",
-    "typescript": "^4.0.5"
+    "lint-staged": "^10.5.4",
+    "prettier": "^2.2.1",
+    "start-server-and-test": "^1.12.1",
+    "typescript": "^4.2.4"
   },
   "authors": [
     {

@@ -1,4 +1,6 @@
 import axe from 'axe-core';
+import cliReporter from './cli-reporter';
+import { assertViolations, isEmptyObjectorNull, logViolations } from './utils';
 
 declare global {
 	interface Window {
@@ -12,14 +14,22 @@ declare global {
 		interface Chainable {
 			injectAxe: typeof injectAxe;
 			configureAxe: typeof configureAxe;
-			checkA11y: typeof checkA11y;
+			checkA11y(options?: CypressAxeOptions, label?: string): void;
 		}
 	}
 }
 
-export interface Options extends axe.RunOptions {
-	includedImpacts?: string[];
+interface CypressAxeOptions {
+	axeOptions?: axe.RunOptions;
+	shouldFail?: (violations: axe.Result[]) => boolean;
+	reporters?: typeof cliReporter[];
 }
+
+let CypressAxeDefaultConfig = {
+	axeOptions: {},
+	shouldFail: (violations: axe.Result[]) => violations.length > 0,
+	reporters: [cliReporter],
+};
 
 export const injectAxe = () => {
 	const fileName =
@@ -39,67 +49,31 @@ export const configureAxe = (configurationOptions = {}) => {
 	});
 };
 
-function isEmptyObjectorNull(value: any) {
-	if (value == null) {
-		return true;
-	}
-	return Object.entries(value).length === 0 && value.constructor === Object;
-}
+export const configureCypressAxe = (options: CypressAxeOptions) => {
+	CypressAxeDefaultConfig = { ...CypressAxeDefaultConfig, ...options };
+};
 
-function assertViolations(violations: axe.Result[]) {
-	assert.equal(
-		violations.length,
-		0,
-		`${violations.length} accessibility violation${
-			violations.length === 1 ? '' : 's'
-		} ${violations.length === 1 ? 'was' : 'were'} detected`
-	);
-}
-
-function logViolations(violations: axe.Result[]) {
-	Cypress.log({
-		name: 'a11y violation summary',
-		message: `${violations.length} accessibility violation${
-			violations.length === 1 ? '' : 's'
-		} ${violations.length === 1 ? 'was' : 'were'} detected`,
-	});
-}
-
-const checkA11y = (
-	context?: axe.ElementContext,
-	options?: Options,
-	violationCallback?: (violations: axe.Result[]) => void,
-	skipFailures: boolean | axe.ImpactValue[] = false
+const checkA11y = (context?: axe.ElementContext) => (
+	options?: CypressAxeOptions,
+	label?: string
 ) => {
+	const { axeOptions, shouldFail, reporters } = {
+		...CypressAxeDefaultConfig,
+		...options,
+	};
+
 	cy.window({ log: false })
 		.then((win) => {
 			if (isEmptyObjectorNull(context)) {
 				context = undefined;
 			}
-			if (isEmptyObjectorNull(options)) {
-				options = undefined;
-			}
-			if (isEmptyObjectorNull(violationCallback)) {
-				violationCallback = undefined;
-			}
-			const { includedImpacts, ...axeOptions } = options || {};
+
 			return win.axe
 				.run(context || win.document, axeOptions)
-				.then(({ violations }) => {
-					return includedImpacts &&
-						Array.isArray(includedImpacts) &&
-						Boolean(includedImpacts.length)
-						? violations.filter(
-								(v) => v.impact && includedImpacts.includes(v.impact)
-						  )
-						: violations;
-				});
+				.then(({ violations }) => violations);
 		})
 		.then((violations) => {
 			if (violations.length) {
-				if (violationCallback) {
-					violationCallback(violations);
-				}
 				violations.forEach((v) => {
 					const selectors = v.nodes
 						.reduce<string[]>((acc, node) => acc.concat(node.target), [])
@@ -119,25 +93,16 @@ const checkA11y = (
 			return cy.wrap(violations, { log: false });
 		})
 		.then((violations) => {
-			if (skipFailures === true) {
+			if (violations.length && shouldFail(violations)) {
 				logViolations(violations);
-			} else if (Array.isArray(skipFailures) && skipFailures.length) {
-				// const unknownViolations = violations.filter(v => !v.impact); // null | undefined
-				const failableViolations = violations.filter(
-					(v) => v.impact && !skipFailures.includes(v.impact)
-				);
-				const warnOnlyViolations = violations.filter(
-					(v) => !v.impact || skipFailures.includes(v.impact)
-				);
-
-				if (warnOnlyViolations) {
-					logViolations(warnOnlyViolations);
-				}
-				if (failableViolations.length) {
-					assertViolations(failableViolations);
-				}
-			} else {
 				assertViolations(violations);
+				reporters.forEach((reporter) => {
+					reporter({
+						filename: process.cwd(),
+						results: violations,
+						label,
+					});
+				});
 			}
 		});
 };
@@ -146,4 +111,12 @@ Cypress.Commands.add('injectAxe', injectAxe);
 
 Cypress.Commands.add('configureAxe', configureAxe);
 
-Cypress.Commands.add('checkA11y', checkA11y);
+Cypress.Commands.add(
+	'checkA11y',
+	{ prevSubject: 'optional' },
+	(subject?, options?: CypressAxeOptions, label?: string) => {
+		checkA11y(subject)(options, label);
+	}
+);
+
+Cypress.Commands.add('configureCypressAxe', configureCypressAxe);
