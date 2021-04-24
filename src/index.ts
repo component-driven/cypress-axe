@@ -25,13 +25,13 @@ declare global {
 
 interface CypressAxeOptions {
 	axeOptions?: axe.RunOptions;
-	shouldFail?: (violations: axe.Result[]) => boolean;
+	shouldFail?: (violations: axe.Result[]) => axe.Result[];
 	reporters?: typeof consoleReporter[];
 }
 
 let defaultCypressAxeConfig = {
 	axeOptions: {},
-	shouldFail: (violations: axe.Result[]) => violations.length > 0,
+	shouldFail: (violations: axe.Result[]) => violations,
 	reporters: [consoleReporter],
 };
 
@@ -76,18 +76,18 @@ const checkA11y = (params: {
 				.then(({ violations }) => violations);
 		})
 		.then((violations) => cy.wrap(violations, { log: false }))
-		.then((violations) => {
-			if (shouldFail(violations)) {
+		.then((violations) => shouldFail(violations))
+		.then((failableViolations) => {
+			if (shouldFail(failableViolations).length) {
 				reporters.forEach((reporter) => {
 					reporter({
 						filename: Cypress.spec.name,
-						results: violations,
+						results: failableViolations,
 						label,
 					});
 				});
+				assertViolations(failableViolations);
 			}
-
-			assertViolations(violations);
 		});
 };
 
