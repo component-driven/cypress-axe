@@ -4,35 +4,12 @@ import {
 	consoleReporter,
 	isEmptyOrNullObject,
 } from './utils';
-
-declare global {
-	interface Window {
-		axe: typeof axe;
-	}
-}
-
-declare global {
-	// eslint-disable-next-line @typescript-eslint/no-namespace
-	namespace Cypress {
-		interface Chainable {
-			injectAxe: typeof injectAxe;
-			configureAxe: typeof configureAxe;
-			configureCypressAxe: typeof configureCypressAxe;
-			checkA11y(options?: CypressAxeOptions, label?: string): void;
-		}
-	}
-}
-
-interface CypressAxeOptions {
-	axeOptions?: axe.RunOptions;
-	shouldFail?: (violations: axe.Result[]) => axe.Result[];
-	reporters?: typeof consoleReporter[];
-}
+import type { CypressAxeOptions } from './types';
 
 let defaultCypressAxeConfig = {
 	axeOptions: {},
 	shouldFail: (violations: axe.Result[]) => violations,
-	reporters: [consoleReporter],
+	violationsCb: consoleReporter,
 };
 
 export const injectAxe = () => {
@@ -63,7 +40,7 @@ const checkA11y = (params: {
 	label?: string;
 }) => {
 	const { context, label } = params;
-	const { axeOptions, shouldFail, reporters } = {
+	const { axeOptions, shouldFail, violationsCb } = {
 		...defaultCypressAxeConfig,
 		...params.options,
 	};
@@ -78,17 +55,16 @@ const checkA11y = (params: {
 		.then((violations) => cy.wrap(violations, { log: false }))
 		.then((violations) => shouldFail(violations))
 		.then((failableViolations) => {
-			if (shouldFail(failableViolations).length) {
-				reporters.forEach((reporter) => {
-					reporter({
-						filename: Cypress.spec.name,
-						results: failableViolations,
-						label,
-					});
+			if (failableViolations.length) {
+				violationsCb({
+					filename: Cypress.spec.name,
+					results: failableViolations,
+					label,
 				});
-				assertViolations(failableViolations);
 			}
-		});
+			return new Promise(resolve => resolve(failableViolations));
+		})
+		.then((failableViolations) => assertViolations(failableViolations as axe.Result[]));
 };
 
 Cypress.Commands.add('injectAxe', injectAxe);

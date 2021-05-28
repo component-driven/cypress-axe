@@ -25,7 +25,7 @@
     "test:e2e:ci": "start-server-and-test start 8080 cypress:headless"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
   },
   "dependencies": {},
   "peerDependencies": {
