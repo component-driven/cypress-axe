@@ -33,7 +33,7 @@ export const injectAxe = () => {
 	);
 };
 
-export const configureAxe = (configurationOptions = {}) => {
+export const configureAxe = (configurationOptions: axe.Spec = {}) => {
 	cy.window({ log: false }).then((win) => {
 		return win.axe.configure(configurationOptions);
 	});
