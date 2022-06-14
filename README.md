@@ -18,7 +18,7 @@ npm install --save-dev cypress-axe
 npm install --save-dev cypress axe-core
 ```
 
-3. **Include the commands.** Update `cypress/support/index.js` file to include the cypress-axe commands by adding:
+3. **Include the commands.** Update `cypress/support/e2e.js` file to include the cypress-axe commands by adding:
 
 ```js
 import 'cypress-axe'
