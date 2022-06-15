@@ -8,17 +8,33 @@ Test accessibility with [axe-core](https://github.com/dequelabs/axe-core) in [Cy
 
 1. **Install `cypress-axe` from npm:**
 
+- For Cypress v10 install latest cypress-axe
+
 ```sh
 npm install --save-dev cypress-axe
 ```
 
-2. **Install peer dependencies:**
+- For Cypress v9 install 0.x.x
+
+```sh
+npm install --save-dev cypress-axe@0.14.0
+```
+
+1. **Install peer dependencies:**
+
+- For Cypress v10 and above
 
 ```sh
 npm install --save-dev cypress axe-core
 ```
 
-3. **Include the commands.**
+- For Cypress v9 and below install the specific cypress version you are using For example if you are using cypress v9.6.0
+
+```sh
+npm install --save-dev cypress@9.6.0 axe-core
+```
+
+1. **Include the commands.**
 
 - For Cypress v10 and above update `cypress/support/e2e.js` file to include the cypress-axe commands by adding:
 - For Cypress v9 and below update `cypress/support/index.js` file to include the cypress-axe commands by adding:
