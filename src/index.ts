@@ -21,9 +21,9 @@ export interface Options extends axe.RunOptions {
 	includedImpacts?: string[];
 }
 
-export type AlertLevels =
-	| false
-	| ['minor' | 'moderate' | 'serious' | 'critical'];
+export type SeverityLevels = ['minor' | 'moderate' | 'serious' | 'critical'];
+
+export type AlertLevels = 'any' | 'none' | SeverityLevels;
 
 export const injectAxe = () => {
 	const fileName =
@@ -50,11 +50,23 @@ function isEmptyObjectorNull(value: any) {
 	return Object.entries(value).length === 0 && value.constructor === Object;
 }
 
+const assertOnViolations = (violations: any[], failLevel: AlertLevels) => {
+	assert.equal(
+		violations.length,
+		0,
+		`
+	== ${failLevel ? 'Failure set on errors of type ' + failLevel : ''} ==
+	${violations.length} accessibility violation${
+			violations.length === 1 ? '' : 's'
+		} ${violations.length === 1 ? 'was' : 'were'} detected`
+	);
+};
+
 const checkA11y = (
 	context?: axe.ElementContext,
 	options?: Options,
 	violationCallback?: (violations: axe.Result[]) => void,
-	failOn: AlertLevels = false
+	failOn: AlertLevels = 'any'
 ) => {
 	cy.window({ log: false })
 		.then((win) => {
@@ -104,28 +116,21 @@ const checkA11y = (
 			return cy.wrap(violations, { log: false });
 		})
 		.then((violations) => {
-			const violated =
-				failOn &&
-				Array.isArray(failOn) &&
-				Boolean(failOn.length) &&
-				violations.filter((v) => v.impact && failOn.includes(v.impact));
+			if (failOn === 'none') {
+				return;
+			}
+			if (failOn === 'any') {
+				assertOnViolations(violations, failOn);
+			} else {
+				const violated =
+					failOn &&
+					Array.isArray(failOn) &&
+					Boolean(failOn.length) &&
+					violations.filter((v) => v.impact && failOn.includes(v.impact));
 
-			if (violated) {
-				assert.equal(
-					violated.length,
-					0,
-					`Failure set on errors type ${failOn}
-					${violated.length} accessibility violation${violated.length === 1 ? '' : 's'} ${
-						violated.length === 1 ? 'was' : 'were'
-					} detected`
-				);
-			} else if (violations.length) {
-				Cypress.log({
-					name: 'a11y violation summary',
-					message: `${violations.length} accessibility violation${
-						violations.length === 1 ? '' : 's'
-					} ${violations.length === 1 ? 'was' : 'were'} detected`,
-				});
+				if (violated) {
+					assertOnViolations(violated, failOn);
+				}
 			}
 		});
 };
