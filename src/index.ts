@@ -21,6 +21,10 @@ export interface Options extends axe.RunOptions {
 	includedImpacts?: string[];
 }
 
+export type AlertLevels =
+	| false
+	| ['minor' | 'moderate' | 'serious' | 'critical'];
+
 export const injectAxe = () => {
 	const fileName =
 		typeof require?.resolve === 'function'
@@ -50,7 +54,7 @@ const checkA11y = (
 	context?: axe.ElementContext,
 	options?: Options,
 	violationCallback?: (violations: axe.Result[]) => void,
-	skipFailures = false
+	failOn: AlertLevels = false
 ) => {
 	cy.window({ log: false })
 		.then((win) => {
@@ -100,13 +104,20 @@ const checkA11y = (
 			return cy.wrap(violations, { log: false });
 		})
 		.then((violations) => {
-			if (!skipFailures) {
+			const violated =
+				failOn &&
+				Array.isArray(failOn) &&
+				Boolean(failOn.length) &&
+				violations.filter((v) => v.impact && failOn.includes(v.impact));
+
+			if (violated) {
 				assert.equal(
-					violations.length,
+					violated.length,
 					0,
-					`${violations.length} accessibility violation${
-						violations.length === 1 ? '' : 's'
-					} ${violations.length === 1 ? 'was' : 'were'} detected`
+					`Failure set on errors type ${failOn}
+					${violated.length} accessibility violation${violated.length === 1 ? '' : 's'} ${
+						violated.length === 1 ? 'was' : 'were'
+					} detected`
 				);
 			} else if (violations.length) {
 				Cypress.log({
