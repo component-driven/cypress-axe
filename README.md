@@ -131,11 +131,11 @@ Allows you to define a callback that receives the violations for custom side-eff
 
 **NOTE:** _This respects the `includedImpacts` filter and will only execute with violations that are included._
 
-##### skipFailures (optional, defaults to false)
+##### failOn (optional, defaults to 'any')
 
-Disables assertions based on violations and only logs violations to the console output. This enabled you to see violations while allowing your tests to pass. This should be used as a temporary measure while you address accessibility violations.
+Set a level to fail on. Options are 'any', 'none' or an array of levels ['minor', 'moderate', 'serious', 'critical'];
 
-Reference : https://github.com/component-driven/cypress-axe/issues/17
+Allows you to set the level of severity to fail on. If set to 'any', any level of violation will fail, whilst 'none' will allow all violations to pass. You can fine tune this with a severity array, e.g. `['serious', 'critical']` will only fail on errors at the serious or critical level. This allows you to log all violations using e.g. `cy.checkA11y(null, null, terminalLog)` whilst only failing for a particular severity level.
 
 ### Examples
 
@@ -175,7 +175,12 @@ it('Has no a11y violations after button click', () => {
 
 it('Only logs a11y violations while allowing the test to pass', () => {
   // Do not fail the test when there are accessibility failures
-  cy.checkA11y(null, null, null, true)
+  cy.checkA11y(null, null, null, 'none')
+})
+
+it('Only logs a11y violations of level "critical"', () => {
+  // Do not fail the test when there are accessibility failures below the 'critical' level
+  cy.checkA11y(null, null, ['critical'])
 })
 ```
 
