@@ -49,7 +49,7 @@ function isEmptyObjectorNull(value: any) {
 const checkA11y = (
 	context?: axe.ElementContext,
 	options?: Options,
-	violationCallback?: (violations: axe.Result[]) => void,
+	axeResultsCallback?: (axeResults: axe.AxeResults) => void,
 	skipFailures = false
 ) => {
 	cy.window({ log: false })
@@ -60,27 +60,32 @@ const checkA11y = (
 			if (isEmptyObjectorNull(options)) {
 				options = undefined;
 			}
-			if (isEmptyObjectorNull(violationCallback)) {
-				violationCallback = undefined;
+			if (isEmptyObjectorNull(axeResultsCallback)) {
+				axeResultsCallback = undefined;
 			}
 			const { includedImpacts, ...axeOptions } = options || {};
 			return win.axe
 				.run(context || win.document, axeOptions)
-				.then(({ violations }) => {
-					return includedImpacts &&
+				.then((results) => {
+					if (
+						includedImpacts &&
 						Array.isArray(includedImpacts) &&
 						Boolean(includedImpacts.length)
-						? violations.filter(
-								(v) => v.impact && includedImpacts.includes(v.impact)
-						  )
-						: violations;
+					) {
+						results.violations = results.violations.filter(
+							(v) => v.impact && includedImpacts.includes(v.impact)
+						);
+					}
+					return results;
 				});
 		})
-		.then((violations) => {
+		.then((results) => {
+			if (axeResultsCallback) {
+				axeResultsCallback(results);
+			}
+
+			const violations = results.violations;
 			if (violations.length) {
-				if (violationCallback) {
-					violationCallback(violations);
-				}
 				violations.forEach((v) => {
 					const selectors = v.nodes
 						.reduce<string[]>((acc, node) => acc.concat(node.target), [])
