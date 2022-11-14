@@ -8,7 +8,7 @@ Test accessibility with [axe-core](https://github.com/dequelabs/axe-core) in [Cy
 
 1. **Install `cypress-axe` from npm:**
 
-- For Cypress v10 install latest cypress-axe
+- For Cypress v10 and above install latest cypress-axe
 
 ```sh
 npm install --save-dev cypress-axe
