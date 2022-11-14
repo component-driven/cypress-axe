@@ -1,4 +1,4 @@
-import * as axe from 'axe-core';
+import axe from 'axe-core';
 
 declare global {
 	interface Window {
@@ -22,15 +22,9 @@ export interface Options extends axe.RunOptions {
 }
 
 export const injectAxe = () => {
-	const fileName =
-		typeof require?.resolve === 'function'
-			? require.resolve('axe-core/axe.min.js')
-			: 'node_modules/axe-core/axe.min.js';
-	cy.readFile<string>(fileName).then((source) =>
-		cy.window({ log: false }).then((window) => {
-			window.eval(source);
-		})
-	);
+	cy.window({ log: false }).then((window) => {
+		window.axe = axe;
+	})
 };
 
 export const configureAxe = (configurationOptions = {}) => {
