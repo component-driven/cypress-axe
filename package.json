@@ -1,6 +1,6 @@
 {
   "name": "cypress-axe",
-  "version": "0.8.1",
+  "version": "1.0.1",
   "license": "MIT",
   "description": "Test accessibility with axe-core in Cypress",
   "homepage": "https://github.com/component-driven/cypress-axe",
