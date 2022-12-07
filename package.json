@@ -30,7 +30,7 @@
   "dependencies": {},
   "peerDependencies": {
     "axe-core": "^3 || ^4",
-    "cypress": "^10 || ^11"
+    "cypress": "^10 || ^11 || ^12"
   },
   "devDependencies": {
     "@types/node": "^14.14.8",
@@ -73,4 +73,4 @@
     "*.js": "eslint --cache --fix",
     "*.{js,md}": "prettier --write"
   }
-} 
+}
