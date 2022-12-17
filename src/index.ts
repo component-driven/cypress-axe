@@ -19,6 +19,8 @@ declare global {
 
 export interface Options extends axe.RunOptions {
 	includedImpacts?: string[];
+	interval?: number;
+	retries?: number;
 }
 
 export const injectAxe = () => {
@@ -46,6 +48,17 @@ function isEmptyObjectorNull(value: any) {
 	return Object.entries(value).length === 0 && value.constructor === Object;
 }
 
+function summarizeResults(
+	includedImpacts: string[] | undefined,
+	violations: axe.Result[]
+): axe.Result[] {
+	return includedImpacts &&
+		Array.isArray(includedImpacts) &&
+		Boolean(includedImpacts.length)
+		? violations.filter((v) => v.impact && includedImpacts.includes(v.impact))
+		: violations;
+}
+
 const checkA11y = (
 	context?: axe.ElementContext,
 	options?: Options,
@@ -63,18 +76,25 @@ const checkA11y = (
 			if (isEmptyObjectorNull(violationCallback)) {
 				violationCallback = undefined;
 			}
-			const { includedImpacts, ...axeOptions } = options || {};
-			return win.axe
-				.run(context || win.document, axeOptions)
-				.then(({ violations }) => {
-					return includedImpacts &&
-						Array.isArray(includedImpacts) &&
-						Boolean(includedImpacts.length)
-						? violations.filter(
-								(v) => v.impact && includedImpacts.includes(v.impact)
-						  )
-						: violations;
-				});
+			const { includedImpacts, interval, retries, ...axeOptions } =
+				options || {};
+			let remainingRetries = retries || 0;
+			function runAxeCheck(): Promise<axe.Result[]> {
+				return win.axe
+					.run(context || win.document, axeOptions)
+					.then(({ violations }) => {
+						const results = summarizeResults(includedImpacts, violations);
+						if (results.length > 0 && remainingRetries > 0) {
+							remainingRetries--;
+							return new Promise((resolve) => {
+								setTimeout(resolve, interval || 1000);
+							}).then(runAxeCheck);
+						} else {
+							return results;
+						}
+					});
+			}
+			return runAxeCheck();
 		})
 		.then((violations) => {
 			if (violations.length) {

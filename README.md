@@ -119,9 +119,11 @@ Defines the scope of the analysis - the part of the DOM that you would like to a
 
 Set of options passed into rules or checks, temporarily modifying them. This contrasts with axe.configure, which is more permanent.
 
-The keys consist of [those accepted by `axe.run`'s options argument](https://www.deque.com/axe/documentation/api-documentation/#parameters-axerun) as well as a custom `includedImpacts` key.
+The keys consist of [those accepted by `axe.run`'s options argument](https://www.deque.com/axe/documentation/api-documentation/#parameters-axerun), a custom `includedImpacts` key, and `retries`/`interval` keys for retrying the check.
 
 The `includedImpacts` key is an array of strings that map to `impact` levels in violations. Specifying this array will only include violations where the impact matches one of the included values. Possible impact values are "minor", "moderate", "serious", or "critical".
+
+The `retries` key is an integer that specifies how many times to retry the check if there are initial findings. The `interval` key is an integer that specifies the number of milliseconds to wait between retries, and defaults to `1000` (one second). If `retries` is not specified, the check will only be run once. Use this option to account for dynamic content that may not be fully loaded when the check is first run.
 
 Filtering based on impact in combination with the `skipFailures` argument allows you to introduce `cypress-axe` into tests for a legacy application without failing in CI before you have an opportunity to address accessibility issues. Ideally, you would steadily move towards stricter testing as you address issues.
 
@@ -176,6 +178,14 @@ it('Has no a11y violations after button click', () => {
 it('Only logs a11y violations while allowing the test to pass', () => {
   // Do not fail the test when there are accessibility failures
   cy.checkA11y(null, null, null, true)
+})
+
+it('Has no a11y violations after asynchronous load', () => {
+  // Retry the check if there are initial failures
+  cy.checkA11y(null, {
+    retries: 3,
+    interval: 100
+  })
 })
 ```
 
