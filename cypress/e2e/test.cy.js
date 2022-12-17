@@ -1,5 +1,5 @@
 it('works!', () => {
 	cy.visit('/');
 	cy.injectAxe();
-	cy.checkA11y();
+	cy.checkA11y('body');
 });
