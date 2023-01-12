@@ -21,11 +21,16 @@ export interface Options extends axe.RunOptions {
 	includedImpacts?: string[];
 }
 
-export const injectAxe = () => {
+export interface InjectOptions {
+	axeCorePath?: string;
+}
+
+export const injectAxe = (injectOptions?: InjectOptions) => {
 	const fileName =
-		typeof require?.resolve === 'function'
+		injectOptions?.axeCorePath ||
+		(typeof require?.resolve === 'function'
 			? require.resolve('axe-core/axe.min.js')
-			: 'node_modules/axe-core/axe.min.js';
+			: 'node_modules/axe-core/axe.min.js');
 	cy.readFile<string>(fileName).then((source) =>
 		cy.window({ log: false }).then((window) => {
 			window.eval(source);
