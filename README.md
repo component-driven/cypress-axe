@@ -76,6 +76,21 @@ beforeEach(() => {
 })
 ```
 
+The `injectAxe` function receives an optional argument `injectOptions` of type `InjectOptions`.
+
+This `injectOptions` object can have a property `axeCorePath` of type `string`, which allows the user to specify the file from which `axe-core` will be injected.
+
+If `axeCorePath` is not provided, the function will try to resolve the path to `axe-core/axe.min.js` using the `require.resolve` function, if it is available.
+
+If `require.resolve` is not available, the default path `node_modules/axe-core/axe.min.js` will be used.
+
+```js
+beforeEach(() => {
+  cy.visit('http://localhost:9000')
+  cy.injectAxe({ axeCorePath: '<path-to-axe-core>' })
+})
+```
+
 ### cy.configureAxe
 
 #### Purpose
