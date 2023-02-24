@@ -9,6 +9,14 @@
 		</header>
 		<main>
 			<p>This is cypress-axe test.</p>
+			<a id="link" href="https://example.com"></a>
 		</main>
+		<script>
+			setTimeout(() => {
+				document
+					.getElementById('link')
+					.appendChild(document.createTextNode('Link'));
+			}, 101);
+		</script>
 	</body>
 </html>
