@@ -40,7 +40,7 @@ export const injectAxe = (injectOptions?: InjectOptions) => {
 	);
 };
 
-export const configureAxe = (configurationOptions = {}) => {
+export const configureAxe = (configurationOptions: axe.Spec = {}) => {
 	cy.window({ log: false }).then((win) => {
 		return win.axe.configure(configurationOptions);
 	});
