@@ -20,7 +20,7 @@ npm install --save-dev cypress-axe
 npm install --save-dev cypress-axe@0.14.0
 ```
 
-1. **Install peer dependencies:**
+2. **Install peer dependencies:**
 
 - For Cypress v10 and above
 
@@ -34,9 +34,14 @@ npm install --save-dev cypress axe-core
 npm install --save-dev cypress@9.6.0 axe-core
 ```
 
-1. **Include the commands.**
+3. **Include the commands:**
 
 - For Cypress v10 and above update `cypress/support/e2e.js` file to include the cypress-axe commands by adding:
+
+```
+TODO what should be here? Nothing? Should the line above specify that nothing needs to be added?
+```
+
 - For Cypress v9 and below update `cypress/support/index.js` file to include the cypress-axe commands by adding:
 
 ```js
@@ -212,23 +217,46 @@ This example adds custom logging to the terminal running Cypress, using `cy.task
 
 ##### In Cypress plugins file
 
-This registers a `log` task as seen in the [Cypress docs for cy.task](https://docs.cypress.io/api/commands/task.html#Usage) as well as a `table` task for sending tabular data to the terminal.
+For Cypress < v10, you will write a [plugin](https://docs.cypress.io/api/plugins/writing-a-plugin). For cypress >= v10, the definitions go inside the Cypress configuration file. This registers a `log` task as seen in the [Cypress docs for cy.task](https://docs.cypress.io/api/commands/task.html#Usage) as well as a `table` task for sending tabular data to the terminal.
 
+Plugin Definition:
 ```js
 module.exports = (on, config) => {
   on('task', {
     log(message) {
       console.log(message)
-
       return null
     },
     table(message) {
       console.table(message)
-
       return null
     }
   })
 }
+```
+
+Inside cypress.config.js:
+```js
+const { defineConfig } = require('cypress')
+
+module.exports = defineConfig({
+  // setupNodeEvents can be defined in either
+  // the e2e or component configuration
+  e2e: {
+    setupNodeEvents(on, config) {
+      on("task", {
+        log(message) {
+          console.log(message)
+          return null
+        },
+        table(message) {
+          console.table(message)
+          return null
+        }
+      })
+    }
+  }
+})
 ```
 
 #### In your spec file
