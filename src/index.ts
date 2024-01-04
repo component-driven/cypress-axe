@@ -28,9 +28,10 @@ export interface InjectOptions {
 }
 
 export const injectAxe = (injectOptions?: InjectOptions) => {
+
 	const fileName =
 		injectOptions?.axeCorePath ||
-		(typeof require?.resolve === 'function'
+		(typeof require != 'undefined' && typeof require?.resolve === 'function'
 			? require.resolve('axe-core/axe.min.js')
 			: 'node_modules/axe-core/axe.min.js');
 	cy.readFile<string>(fileName).then((source) =>
