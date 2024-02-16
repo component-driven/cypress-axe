@@ -67,6 +67,7 @@ function summarizeResults(
 const checkA11y = (
 	context?: axe.ElementContext,
 	options?: Options,
+	resultsCallback?: (results: axe.AxeResults) => void,
 	violationCallback?: (violations: axe.Result[]) => void,
 	skipFailures = false
 ) => {
@@ -78,35 +79,42 @@ const checkA11y = (
 			if (isEmptyObjectorNull(options)) {
 				options = undefined;
 			}
+			if (isEmptyObjectorNull(resultsCallback)) {
+				violationCallback = undefined;
+			}
 			if (isEmptyObjectorNull(violationCallback)) {
 				violationCallback = undefined;
 			}
 			const { includedImpacts, interval, retries, ...axeOptions } =
 				options || {};
 			let remainingRetries = retries || 0;
-			function runAxeCheck(): Promise<axe.Result[]> {
+			function runAxeCheck(): Promise<{ results: axe.AxeResults, violationResults: axe.Result[] }> {
 				return win.axe
 					.run(context || win.document, axeOptions)
-					.then(({ violations }) => {
-						const results = summarizeResults(includedImpacts, violations);
-						if (results.length > 0 && remainingRetries > 0) {
+					.then((results) => {
+						const violationResults = summarizeResults(includedImpacts, results.violations);
+						if (violationResults.length > 0 && remainingRetries > 0) {
 							remainingRetries--;
 							return new Promise((resolve) => {
 								setTimeout(resolve, interval || 1000);
 							}).then(runAxeCheck);
 						} else {
-							return results;
+							return { results, violationResults };
 						}
 					});
 			}
 			return runAxeCheck();
 		})
-		.then((violations) => {
-			if (violations.length) {
+		.then(({ results, violationResults }) => {
+			if (resultsCallback) {
+				resultsCallback(results)
+			}
+
+			if (violationResults.length) {
 				if (violationCallback) {
-					violationCallback(violations);
+					violationCallback(violationResults);
 				}
-				violations.forEach((v) => {
+				violationResults.forEach((v) => {
 					const selectors = v.nodes
 						.reduce<string[]>((acc, node) => acc.concat(node.target), [])
 						.join(', ');
@@ -115,30 +123,27 @@ const checkA11y = (
 						$el: Cypress.$(selectors),
 						name: 'a11y error!',
 						consoleProps: () => v,
-						message: `${v.id} on ${v.nodes.length} Node${
-							v.nodes.length === 1 ? '' : 's'
-						}`,
+						message: `${v.id} on ${v.nodes.length} Node${v.nodes.length === 1 ? '' : 's'
+							}`,
 					});
 				});
 			}
 
-			return cy.wrap(violations, { log: false });
+			return cy.wrap(violationResults, { log: false });
 		})
 		.then((violations) => {
 			if (!skipFailures) {
 				assert.equal(
 					violations.length,
 					0,
-					`${violations.length} accessibility violation${
-						violations.length === 1 ? '' : 's'
+					`${violations.length} accessibility violation${violations.length === 1 ? '' : 's'
 					} ${violations.length === 1 ? 'was' : 'were'} detected`
 				);
 			} else if (violations.length) {
 				Cypress.log({
 					name: 'a11y violation summary',
-					message: `${violations.length} accessibility violation${
-						violations.length === 1 ? '' : 's'
-					} ${violations.length === 1 ? 'was' : 'were'} detected`,
+					message: `${violations.length} accessibility violation${violations.length === 1 ? '' : 's'
+						} ${violations.length === 1 ? 'was' : 'were'} detected`,
 				});
 			}
 		});

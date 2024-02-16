@@ -142,6 +142,10 @@ The `retries` key is an integer that specifies how many times to retry the check
 
 Filtering based on impact in combination with the `skipFailures` argument allows you to introduce `cypress-axe` into tests for a legacy application without failing in CI before you have an opportunity to address accessibility issues. Ideally, you would steadily move towards stricter testing as you address issues.
 
+##### resultsCallback (optional)
+
+Allows you to define a callback that receives the results for custom side-effects, such as adding custom output to the terminal.
+
 ##### violationCallback (optional)
 
 Allows you to define a callback that receives the violations for custom side-effects, such as adding custom output to the terminal.
