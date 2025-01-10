@@ -6,35 +6,21 @@ Test accessibility with [axe-core](https://github.com/dequelabs/axe-core) in [Cy
 
 ## Installation
 
-1. **Install `cypress-axe` from npm:**
+1. **Install `cypress-axe` and peer dependencies from npm:**
 
-- For Cypress v10 and above install latest cypress-axe
-
-```sh
-npm install --save-dev cypress-axe
-```
-
-- For Cypress v9 install 0.x.x
+- For Cypress v10 and above, install the latest axe-core, cypress, and cypress-axe
 
 ```sh
-npm install --save-dev cypress-axe@0.14.0
+npm install --save-dev axe-core cypress cypress-axe
 ```
 
-1. **Install peer dependencies:**
-
-- For Cypress v10 and above
+- For Cypress v9, install cypress-axe 0.x.x and your specific cypress version. For example, if you are using cypress v9.6.0
 
 ```sh
-npm install --save-dev cypress axe-core
+npm install --save-dev axe-core cypress@9.6.0 cypress-axe@0.14.0
 ```
 
-- For Cypress v9 and below install the specific cypress version you are using For example if you are using cypress v9.6.0
-
-```sh
-npm install --save-dev cypress@9.6.0 axe-core
-```
-
-1. **Include the commands.**
+2. **Include the commands.**
 
 - For Cypress v10 and above update `cypress/support/e2e.js` file to include the cypress-axe commands by adding:
 - For Cypress v9 and below update `cypress/support/index.js` file to include the cypress-axe commands by adding:
@@ -43,7 +29,7 @@ npm install --save-dev cypress@9.6.0 axe-core
 import 'cypress-axe'
 ```
 
-4. **Add a task to log the messages to the terminal** when Cypress executes the spec files. [Example - configuring log task](https://docs.cypress.io/api/commands/task.html#Usage).
+3. **Add a task to log the messages to the terminal** when Cypress executes the spec files. [Example - configuring log task](https://docs.cypress.io/api/commands/task.html#Usage).
 
 ### TypeScript
 
