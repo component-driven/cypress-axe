@@ -30,7 +30,7 @@
   "dependencies": {},
   "peerDependencies": {
     "axe-core": "^3 || ^4",
-    "cypress": "^10 || ^11 || ^12 || ^13" || ^14"
+    "cypress": "^10 || ^11 || ^12 || ^13 || ^14"
   },
   "devDependencies": {
     "@types/node": "^14.14.8",
