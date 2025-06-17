@@ -1,5 +1,5 @@
 it('works!', () => {
-	cy.visit('https://www.ibm.com/in-en/careers/search');
+	cy.visit('/');
 	cy.injectAxe();
 	cy.checkA11y(undefined, { retries: 0, interval: 10 });
 });
