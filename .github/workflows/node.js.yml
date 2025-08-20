@@ -15,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [lts/-2, lts/-1]
+        node-version: [lts/*, lts/-1]
         cypress-version: [10, 11, 12, 13, 14, 15]
 
     steps:
