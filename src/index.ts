@@ -21,6 +21,7 @@ export interface Options extends axe.RunOptions {
 	includedImpacts?: string[];
 	interval?: number;
 	retries?: number;
+	reportOnly?: boolean;
 }
 
 export interface InjectOptions {
@@ -81,7 +82,7 @@ const checkA11y = (
 			if (isEmptyObjectorNull(violationCallback)) {
 				violationCallback = undefined;
 			}
-			const { includedImpacts, interval, retries, ...axeOptions } =
+			const { includedImpacts, interval, retries,reportOnly, ...axeOptions } =
 				options || {};
 			let remainingRetries = retries || 0;
 			function runAxeCheck(): Promise<axe.Result[]> {
@@ -125,7 +126,7 @@ const checkA11y = (
 			return cy.wrap(violations, { log: false });
 		})
 		.then((violations) => {
-			if (!skipFailures) {
+			if (!skipFailures && !(options && options.reportOnly)) {
 				assert.equal(
 					violations.length,
 					0,
