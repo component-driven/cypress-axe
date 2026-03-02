@@ -1,6 +1,6 @@
 {
   "projectName": "cypress-axe",
-  "projectOwner": "avanslaars",
+  "projectOwner": "component-driven",
   "repoType": "github",
   "repoHost": "https://github.com",
   "files": [
@@ -27,7 +27,54 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "NicholasBoll",
+      "name": "Nicholas Boll",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/338257?v=4",
+      "profile": "https://github.com/NicholasBoll",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "michaeljacobdavis",
+      "name": "Mike Davis",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/916905?v=4",
+      "profile": "https://github.com/michaeljacobdavis",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "chit786",
+      "name": "chit786",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/18376182?v=4",
+      "profile": "https://github.com/chit786",
+      "contributions": [
+        "code",
+        "doc"
+      ]
+    },
+    {
+      "login": "acourdavault",
+      "name": "Adrien courdavault",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/27222128?v=4",
+      "profile": "https://github.com/acourdavault",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "brettz9",
+      "name": "Brett Zamir",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/20234?v=4",
+      "profile": "http://brett-zamir.me",
+      "contributions": [
+        "code"
+      ]
     }
   ],
-  "contributorsPerLine": 7
+  "contributorsPerLine": 7,
+  "skipCi": true
 }
