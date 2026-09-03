@@ -29,7 +29,7 @@
   },
   "peerDependencies": {
     "axe-core": "^3 || ^4",
-    "cypress": "^10 || ^11 || ^12 || ^13 || ^14 || ^15"
+    "cypress": "^10 || ^11 || ^12 || ^13 || ^14 || ^15 || ^16"
   },
   "devDependencies": {
     "@types/node": "^22.13.14",
